@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>{{ title }} - Search Result</title>
+</head>
+<body>
+<div class="header">
+    <div>Results for <strong>{{ title }}</strong></div>
+</div>
+<div class="container">
+    <div class="results">
+
+        {% for item in results %}
+            <div class="result-section">
+                <div class="result-title">
+                    <a href="{{ item.unescapedUrl }}" target="_blank">{{ item.titleNoFormatting }}</a>
+                </div>
+                <div class="result-content">{{ item.content|striptags }}</div>
+                <div class="result-url">
+                    <a href="{{ item.unescapedUrl }}" target="_blank">{{ item.unescapedUrl }}</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
