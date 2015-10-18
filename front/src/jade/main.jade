@@ -1,0 +1,17 @@
+
+header(ng-controller='HeaderController as header' ng-cloak)
+  searchbox(sb-data='header.data' sb-search='header.search()')
+
+main
+  div
+
+footer(ng-controller="FooterController as footer" ng-cloak)
+  .help-notes
+    md-content(layout='row', layout-align='center center')
+      md-button.md-primary(ng-click='footer.help()') help
+
+
+//div(layout='column' ng-cloak)
+//  md-content(layout-padding layout='column')
+//    form(ng-submit='$event.preventDefault()')
+//      md-autocomplete(placeholder='输入关键词或输入`??`获取帮助')
