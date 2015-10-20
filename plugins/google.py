@@ -10,6 +10,7 @@ def fetch(args):
     if search_type == 'web':
         rst = web(args)
     elif search_type in ['img', 'image', 'images']:
+        search_type = 'images'
         rst = images(args)
     elif search_type == 'video':
         rst = video(args)
@@ -18,29 +19,39 @@ def fetch(args):
     elif search_type == 'books':
         rst = books(args)
     elif search_type in ['gh', 'github']:
+        search_type = 'github'
         rst = github(args)
     elif search_type in ['so', 'sof', 'stackoverflow']:
+        search_type = 'stackoverflow'
         rst = stackoverflow(args)
     elif search_type in ['tw', 'twitter']:
+        search_type = 'twitter'
         rst = twitter(args)
     elif search_type in ['wk', 'wiki', 'wikipedia']:
+        search_type = 'wikipedia'
         rst = wikipedia(args)
     elif search_type in ['zh', 'zhihu']:
+        search_type = 'zhihu'
         rst = zhihu(args)
     elif search_type in ['sf', 'segmentfault']:
+        search_type = 'segmentfault'
         rst = segmentfault(args)
     elif search_type in ['v2', 'v2ex']:
+        search_type = 'v2ex'
         rst = v2ex(args)
     else:
+        search_type = 'web'
         rst = web(args)
 
     if rst:
+        json_rst = rst
         if isinstance(rst, bytes):
             rst_str = rst.decode(encoding='utf-8')
-            return {'data': json.loads(rst_str), type: search_type}
+            json_rst = json.loads(rst_str)
         elif isinstance(rst, str):
-            return {'data': json.loads(rst), type: search_type}
-        return {'data': rst, type: search_type}
+            json_rst = json.loads(rst)
+        if isinstance(json_rst, dict) and json_rst.get('responseStatus') == 200:
+            return {'data': json_rst.get('responseData', {}), 'type': search_type}
     return {'message': 'No result.'}
 
 def compose_url(serach_scope):

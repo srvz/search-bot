@@ -1,17 +1,23 @@
 
-header(ng-controller='HeaderController as header' ng-cloak)
-  searchbox(sb-data='header.data' sb-search='header.search()')
+#container
+  header(ng-controller='HeaderController as header' ng-cloak)
+    searchbox(sb-data='header.data' sb-search='header.search()')
 
-main
-  div
+  main
+    #search-results
+      include partial_web
+      #load-more(ng-show='main.showMoreCard')
+        md-content
+          md-card
+            md-card-content
+              div(layout='row' layout-align="space-around center")
+                md-button.md-primary(ng-click='main.goNext()' ng-show='main.showMoreButton') more...
+                p(ng-show='main.showNoMore') {{ main.noMoreMessage }}
+      #progress-circular(ng-show='main.progressMode')
+        div(layout='row' layout-align="space-around center")
+          md-progress-circular.md-hue-2(md-mode='{{ main.progressMode }}' md-diameter='30px')
 
 footer(ng-controller="FooterController as footer" ng-cloak)
   .help-notes
     md-content(layout='row', layout-align='center center')
-      md-button.md-primary(ng-click='footer.help()') help
-
-
-//div(layout='column' ng-cloak)
-//  md-content(layout-padding layout='column')
-//    form(ng-submit='$event.preventDefault()')
-//      md-autocomplete(placeholder='输入关键词或输入`??`获取帮助')
+      md-button.md-primary(ng-click='footer.help($event)') help

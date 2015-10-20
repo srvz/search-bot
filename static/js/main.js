@@ -51,42 +51,45 @@
 	//require('../../bower_components/angular-material/angular-material.mini.css');
 	'use strict';
 	
-	__webpack_require__(1);
+	__webpack_require__(2);
 	
-	__webpack_require__(3);
+	__webpack_require__(4);
 	
-	__webpack_require__(5);
+	__webpack_require__(6);
 	
-	__webpack_require__(7);
+	__webpack_require__(8);
 	
-	__webpack_require__(9);
+	__webpack_require__(10);
 	
-	__webpack_require__(11);
+	__webpack_require__(12);
 	
-	__webpack_require__(17);
-	
-	__webpack_require__(18);
-	
-	__webpack_require__(19);
+	__webpack_require__(14);
 	
 	__webpack_require__(20);
 	
-	__webpack_require__(30);
+	__webpack_require__(21);
 	
-	__webpack_require__(31);
+	__webpack_require__(26);
 	
-	__webpack_require__(13);
-	__webpack_require__(32);
-	__webpack_require__(34);
+	__webpack_require__(27);
+	
+	__webpack_require__(35);
+	
+	__webpack_require__(36);
+	
+	__webpack_require__(16);
+	__webpack_require__(37);
+	__webpack_require__(39);
 
 /***/ },
-/* 1 */
+/* 1 */,
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(2);
+	module.exports = __webpack_require__(3);
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 	/**
@@ -28995,13 +28998,13 @@
 	!window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(4);
+	module.exports = __webpack_require__(5);
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	/**
@@ -29998,13 +30001,13 @@
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(6);
+	module.exports = __webpack_require__(7);
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	/**
@@ -30685,13 +30688,708 @@
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(8);
+	module.exports = __webpack_require__(9);
 
 /***/ },
-/* 8 */
+/* 9 */
+/***/ function(module, exports) {
+
+	/**
+	 * @license AngularJS v1.4.7
+	 * (c) 2010-2015 Google, Inc. http://angularjs.org
+	 * License: MIT
+	 */
+	(function(window, angular, undefined) {'use strict';
+	
+	/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+	 *     Any commits to this file should be reviewed with security in mind.  *
+	 *   Changes to this file can potentially create security vulnerabilities. *
+	 *          An approval from 2 Core members with history of modifying      *
+	 *                         this file is required.                          *
+	 *                                                                         *
+	 *  Does the change somehow allow for arbitrary javascript to be executed? *
+	 *    Or allows for someone to change the prototype of built-in objects?   *
+	 *     Or gives undesired access to variables likes document or window?    *
+	 * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+	
+	var $sanitizeMinErr = angular.$$minErr('$sanitize');
+	
+	/**
+	 * @ngdoc module
+	 * @name ngSanitize
+	 * @description
+	 *
+	 * # ngSanitize
+	 *
+	 * The `ngSanitize` module provides functionality to sanitize HTML.
+	 *
+	 *
+	 * <div doc-module-components="ngSanitize"></div>
+	 *
+	 * See {@link ngSanitize.$sanitize `$sanitize`} for usage.
+	 */
+	
+	/*
+	 * HTML Parser By Misko Hevery (misko@hevery.com)
+	 * based on:  HTML Parser By John Resig (ejohn.org)
+	 * Original code by Erik Arvidsson, Mozilla Public License
+	 * http://erik.eae.net/simplehtmlparser/simplehtmlparser.js
+	 *
+	 * // Use like so:
+	 * htmlParser(htmlString, {
+	 *     start: function(tag, attrs, unary) {},
+	 *     end: function(tag) {},
+	 *     chars: function(text) {},
+	 *     comment: function(text) {}
+	 * });
+	 *
+	 */
+	
+	
+	/**
+	 * @ngdoc service
+	 * @name $sanitize
+	 * @kind function
+	 *
+	 * @description
+	 *   The input is sanitized by parsing the HTML into tokens. All safe tokens (from a whitelist) are
+	 *   then serialized back to properly escaped html string. This means that no unsafe input can make
+	 *   it into the returned string, however, since our parser is more strict than a typical browser
+	 *   parser, it's possible that some obscure input, which would be recognized as valid HTML by a
+	 *   browser, won't make it through the sanitizer. The input may also contain SVG markup.
+	 *   The whitelist is configured using the functions `aHrefSanitizationWhitelist` and
+	 *   `imgSrcSanitizationWhitelist` of {@link ng.$compileProvider `$compileProvider`}.
+	 *
+	 * @param {string} html HTML input.
+	 * @returns {string} Sanitized HTML.
+	 *
+	 * @example
+	   <example module="sanitizeExample" deps="angular-sanitize.js">
+	   <file name="index.html">
+	     <script>
+	         angular.module('sanitizeExample', ['ngSanitize'])
+	           .controller('ExampleController', ['$scope', '$sce', function($scope, $sce) {
+	             $scope.snippet =
+	               '<p style="color:blue">an html\n' +
+	               '<em onmouseover="this.textContent=\'PWN3D!\'">click here</em>\n' +
+	               'snippet</p>';
+	             $scope.deliberatelyTrustDangerousSnippet = function() {
+	               return $sce.trustAsHtml($scope.snippet);
+	             };
+	           }]);
+	     </script>
+	     <div ng-controller="ExampleController">
+	        Snippet: <textarea ng-model="snippet" cols="60" rows="3"></textarea>
+	       <table>
+	         <tr>
+	           <td>Directive</td>
+	           <td>How</td>
+	           <td>Source</td>
+	           <td>Rendered</td>
+	         </tr>
+	         <tr id="bind-html-with-sanitize">
+	           <td>ng-bind-html</td>
+	           <td>Automatically uses $sanitize</td>
+	           <td><pre>&lt;div ng-bind-html="snippet"&gt;<br/>&lt;/div&gt;</pre></td>
+	           <td><div ng-bind-html="snippet"></div></td>
+	         </tr>
+	         <tr id="bind-html-with-trust">
+	           <td>ng-bind-html</td>
+	           <td>Bypass $sanitize by explicitly trusting the dangerous value</td>
+	           <td>
+	           <pre>&lt;div ng-bind-html="deliberatelyTrustDangerousSnippet()"&gt;
+	&lt;/div&gt;</pre>
+	           </td>
+	           <td><div ng-bind-html="deliberatelyTrustDangerousSnippet()"></div></td>
+	         </tr>
+	         <tr id="bind-default">
+	           <td>ng-bind</td>
+	           <td>Automatically escapes</td>
+	           <td><pre>&lt;div ng-bind="snippet"&gt;<br/>&lt;/div&gt;</pre></td>
+	           <td><div ng-bind="snippet"></div></td>
+	         </tr>
+	       </table>
+	       </div>
+	   </file>
+	   <file name="protractor.js" type="protractor">
+	     it('should sanitize the html snippet by default', function() {
+	       expect(element(by.css('#bind-html-with-sanitize div')).getInnerHtml()).
+	         toBe('<p>an html\n<em>click here</em>\nsnippet</p>');
+	     });
+	
+	     it('should inline raw snippet if bound to a trusted value', function() {
+	       expect(element(by.css('#bind-html-with-trust div')).getInnerHtml()).
+	         toBe("<p style=\"color:blue\">an html\n" +
+	              "<em onmouseover=\"this.textContent='PWN3D!'\">click here</em>\n" +
+	              "snippet</p>");
+	     });
+	
+	     it('should escape snippet without any filter', function() {
+	       expect(element(by.css('#bind-default div')).getInnerHtml()).
+	         toBe("&lt;p style=\"color:blue\"&gt;an html\n" +
+	              "&lt;em onmouseover=\"this.textContent='PWN3D!'\"&gt;click here&lt;/em&gt;\n" +
+	              "snippet&lt;/p&gt;");
+	     });
+	
+	     it('should update', function() {
+	       element(by.model('snippet')).clear();
+	       element(by.model('snippet')).sendKeys('new <b onclick="alert(1)">text</b>');
+	       expect(element(by.css('#bind-html-with-sanitize div')).getInnerHtml()).
+	         toBe('new <b>text</b>');
+	       expect(element(by.css('#bind-html-with-trust div')).getInnerHtml()).toBe(
+	         'new <b onclick="alert(1)">text</b>');
+	       expect(element(by.css('#bind-default div')).getInnerHtml()).toBe(
+	         "new &lt;b onclick=\"alert(1)\"&gt;text&lt;/b&gt;");
+	     });
+	   </file>
+	   </example>
+	 */
+	function $SanitizeProvider() {
+	  this.$get = ['$$sanitizeUri', function($$sanitizeUri) {
+	    return function(html) {
+	      var buf = [];
+	      htmlParser(html, htmlSanitizeWriter(buf, function(uri, isImage) {
+	        return !/^unsafe/.test($$sanitizeUri(uri, isImage));
+	      }));
+	      return buf.join('');
+	    };
+	  }];
+	}
+	
+	function sanitizeText(chars) {
+	  var buf = [];
+	  var writer = htmlSanitizeWriter(buf, angular.noop);
+	  writer.chars(chars);
+	  return buf.join('');
+	}
+	
+	
+	// Regular Expressions for parsing tags and attributes
+	var START_TAG_REGEXP =
+	       /^<((?:[a-zA-Z])[\w:-]*)((?:\s+[\w:-]+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)\s*(>?)/,
+	  END_TAG_REGEXP = /^<\/\s*([\w:-]+)[^>]*>/,
+	  ATTR_REGEXP = /([\w:-]+)(?:\s*=\s*(?:(?:"((?:[^"])*)")|(?:'((?:[^'])*)')|([^>\s]+)))?/g,
+	  BEGIN_TAG_REGEXP = /^</,
+	  BEGING_END_TAGE_REGEXP = /^<\//,
+	  COMMENT_REGEXP = /<!--(.*?)-->/g,
+	  DOCTYPE_REGEXP = /<!DOCTYPE([^>]*?)>/i,
+	  CDATA_REGEXP = /<!\[CDATA\[(.*?)]]>/g,
+	  SURROGATE_PAIR_REGEXP = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g,
+	  // Match everything outside of normal chars and " (quote character)
+	  NON_ALPHANUMERIC_REGEXP = /([^\#-~| |!])/g;
+	
+	
+	// Good source of info about elements and attributes
+	// http://dev.w3.org/html5/spec/Overview.html#semantics
+	// http://simon.html5.org/html-elements
+	
+	// Safe Void Elements - HTML5
+	// http://dev.w3.org/html5/spec/Overview.html#void-elements
+	var voidElements = makeMap("area,br,col,hr,img,wbr");
+	
+	// Elements that you can, intentionally, leave open (and which close themselves)
+	// http://dev.w3.org/html5/spec/Overview.html#optional-tags
+	var optionalEndTagBlockElements = makeMap("colgroup,dd,dt,li,p,tbody,td,tfoot,th,thead,tr"),
+	    optionalEndTagInlineElements = makeMap("rp,rt"),
+	    optionalEndTagElements = angular.extend({},
+	                                            optionalEndTagInlineElements,
+	                                            optionalEndTagBlockElements);
+	
+	// Safe Block Elements - HTML5
+	var blockElements = angular.extend({}, optionalEndTagBlockElements, makeMap("address,article," +
+	        "aside,blockquote,caption,center,del,dir,div,dl,figure,figcaption,footer,h1,h2,h3,h4,h5," +
+	        "h6,header,hgroup,hr,ins,map,menu,nav,ol,pre,script,section,table,ul"));
+	
+	// Inline Elements - HTML5
+	var inlineElements = angular.extend({}, optionalEndTagInlineElements, makeMap("a,abbr,acronym,b," +
+	        "bdi,bdo,big,br,cite,code,del,dfn,em,font,i,img,ins,kbd,label,map,mark,q,ruby,rp,rt,s," +
+	        "samp,small,span,strike,strong,sub,sup,time,tt,u,var"));
+	
+	// SVG Elements
+	// https://wiki.whatwg.org/wiki/Sanitization_rules#svg_Elements
+	// Note: the elements animate,animateColor,animateMotion,animateTransform,set are intentionally omitted.
+	// They can potentially allow for arbitrary javascript to be executed. See #11290
+	var svgElements = makeMap("circle,defs,desc,ellipse,font-face,font-face-name,font-face-src,g,glyph," +
+	        "hkern,image,linearGradient,line,marker,metadata,missing-glyph,mpath,path,polygon,polyline," +
+	        "radialGradient,rect,stop,svg,switch,text,title,tspan,use");
+	
+	// Special Elements (can contain anything)
+	var specialElements = makeMap("script,style");
+	
+	var validElements = angular.extend({},
+	                                   voidElements,
+	                                   blockElements,
+	                                   inlineElements,
+	                                   optionalEndTagElements,
+	                                   svgElements);
+	
+	//Attributes that have href and hence need to be sanitized
+	var uriAttrs = makeMap("background,cite,href,longdesc,src,usemap,xlink:href");
+	
+	var htmlAttrs = makeMap('abbr,align,alt,axis,bgcolor,border,cellpadding,cellspacing,class,clear,' +
+	    'color,cols,colspan,compact,coords,dir,face,headers,height,hreflang,hspace,' +
+	    'ismap,lang,language,nohref,nowrap,rel,rev,rows,rowspan,rules,' +
+	    'scope,scrolling,shape,size,span,start,summary,tabindex,target,title,type,' +
+	    'valign,value,vspace,width');
+	
+	// SVG attributes (without "id" and "name" attributes)
+	// https://wiki.whatwg.org/wiki/Sanitization_rules#svg_Attributes
+	var svgAttrs = makeMap('accent-height,accumulate,additive,alphabetic,arabic-form,ascent,' +
+	    'baseProfile,bbox,begin,by,calcMode,cap-height,class,color,color-rendering,content,' +
+	    'cx,cy,d,dx,dy,descent,display,dur,end,fill,fill-rule,font-family,font-size,font-stretch,' +
+	    'font-style,font-variant,font-weight,from,fx,fy,g1,g2,glyph-name,gradientUnits,hanging,' +
+	    'height,horiz-adv-x,horiz-origin-x,ideographic,k,keyPoints,keySplines,keyTimes,lang,' +
+	    'marker-end,marker-mid,marker-start,markerHeight,markerUnits,markerWidth,mathematical,' +
+	    'max,min,offset,opacity,orient,origin,overline-position,overline-thickness,panose-1,' +
+	    'path,pathLength,points,preserveAspectRatio,r,refX,refY,repeatCount,repeatDur,' +
+	    'requiredExtensions,requiredFeatures,restart,rotate,rx,ry,slope,stemh,stemv,stop-color,' +
+	    'stop-opacity,strikethrough-position,strikethrough-thickness,stroke,stroke-dasharray,' +
+	    'stroke-dashoffset,stroke-linecap,stroke-linejoin,stroke-miterlimit,stroke-opacity,' +
+	    'stroke-width,systemLanguage,target,text-anchor,to,transform,type,u1,u2,underline-position,' +
+	    'underline-thickness,unicode,unicode-range,units-per-em,values,version,viewBox,visibility,' +
+	    'width,widths,x,x-height,x1,x2,xlink:actuate,xlink:arcrole,xlink:role,xlink:show,xlink:title,' +
+	    'xlink:type,xml:base,xml:lang,xml:space,xmlns,xmlns:xlink,y,y1,y2,zoomAndPan', true);
+	
+	var validAttrs = angular.extend({},
+	                                uriAttrs,
+	                                svgAttrs,
+	                                htmlAttrs);
+	
+	function makeMap(str, lowercaseKeys) {
+	  var obj = {}, items = str.split(','), i;
+	  for (i = 0; i < items.length; i++) {
+	    obj[lowercaseKeys ? angular.lowercase(items[i]) : items[i]] = true;
+	  }
+	  return obj;
+	}
+	
+	
+	/**
+	 * @example
+	 * htmlParser(htmlString, {
+	 *     start: function(tag, attrs, unary) {},
+	 *     end: function(tag) {},
+	 *     chars: function(text) {},
+	 *     comment: function(text) {}
+	 * });
+	 *
+	 * @param {string} html string
+	 * @param {object} handler
+	 */
+	function htmlParser(html, handler) {
+	  if (typeof html !== 'string') {
+	    if (html === null || typeof html === 'undefined') {
+	      html = '';
+	    } else {
+	      html = '' + html;
+	    }
+	  }
+	  var index, chars, match, stack = [], last = html, text;
+	  stack.last = function() { return stack[stack.length - 1]; };
+	
+	  while (html) {
+	    text = '';
+	    chars = true;
+	
+	    // Make sure we're not in a script or style element
+	    if (!stack.last() || !specialElements[stack.last()]) {
+	
+	      // Comment
+	      if (html.indexOf("<!--") === 0) {
+	        // comments containing -- are not allowed unless they terminate the comment
+	        index = html.indexOf("--", 4);
+	
+	        if (index >= 0 && html.lastIndexOf("-->", index) === index) {
+	          if (handler.comment) handler.comment(html.substring(4, index));
+	          html = html.substring(index + 3);
+	          chars = false;
+	        }
+	      // DOCTYPE
+	      } else if (DOCTYPE_REGEXP.test(html)) {
+	        match = html.match(DOCTYPE_REGEXP);
+	
+	        if (match) {
+	          html = html.replace(match[0], '');
+	          chars = false;
+	        }
+	      // end tag
+	      } else if (BEGING_END_TAGE_REGEXP.test(html)) {
+	        match = html.match(END_TAG_REGEXP);
+	
+	        if (match) {
+	          html = html.substring(match[0].length);
+	          match[0].replace(END_TAG_REGEXP, parseEndTag);
+	          chars = false;
+	        }
+	
+	      // start tag
+	      } else if (BEGIN_TAG_REGEXP.test(html)) {
+	        match = html.match(START_TAG_REGEXP);
+	
+	        if (match) {
+	          // We only have a valid start-tag if there is a '>'.
+	          if (match[4]) {
+	            html = html.substring(match[0].length);
+	            match[0].replace(START_TAG_REGEXP, parseStartTag);
+	          }
+	          chars = false;
+	        } else {
+	          // no ending tag found --- this piece should be encoded as an entity.
+	          text += '<';
+	          html = html.substring(1);
+	        }
+	      }
+	
+	      if (chars) {
+	        index = html.indexOf("<");
+	
+	        text += index < 0 ? html : html.substring(0, index);
+	        html = index < 0 ? "" : html.substring(index);
+	
+	        if (handler.chars) handler.chars(decodeEntities(text));
+	      }
+	
+	    } else {
+	      // IE versions 9 and 10 do not understand the regex '[^]', so using a workaround with [\W\w].
+	      html = html.replace(new RegExp("([\\W\\w]*)<\\s*\\/\\s*" + stack.last() + "[^>]*>", 'i'),
+	        function(all, text) {
+	          text = text.replace(COMMENT_REGEXP, "$1").replace(CDATA_REGEXP, "$1");
+	
+	          if (handler.chars) handler.chars(decodeEntities(text));
+	
+	          return "";
+	      });
+	
+	      parseEndTag("", stack.last());
+	    }
+	
+	    if (html == last) {
+	      throw $sanitizeMinErr('badparse', "The sanitizer was unable to parse the following block " +
+	                                        "of html: {0}", html);
+	    }
+	    last = html;
+	  }
+	
+	  // Clean up any remaining tags
+	  parseEndTag();
+	
+	  function parseStartTag(tag, tagName, rest, unary) {
+	    tagName = angular.lowercase(tagName);
+	    if (blockElements[tagName]) {
+	      while (stack.last() && inlineElements[stack.last()]) {
+	        parseEndTag("", stack.last());
+	      }
+	    }
+	
+	    if (optionalEndTagElements[tagName] && stack.last() == tagName) {
+	      parseEndTag("", tagName);
+	    }
+	
+	    unary = voidElements[tagName] || !!unary;
+	
+	    if (!unary) {
+	      stack.push(tagName);
+	    }
+	
+	    var attrs = {};
+	
+	    rest.replace(ATTR_REGEXP,
+	      function(match, name, doubleQuotedValue, singleQuotedValue, unquotedValue) {
+	        var value = doubleQuotedValue
+	          || singleQuotedValue
+	          || unquotedValue
+	          || '';
+	
+	        attrs[name] = decodeEntities(value);
+	    });
+	    if (handler.start) handler.start(tagName, attrs, unary);
+	  }
+	
+	  function parseEndTag(tag, tagName) {
+	    var pos = 0, i;
+	    tagName = angular.lowercase(tagName);
+	    if (tagName) {
+	      // Find the closest opened tag of the same type
+	      for (pos = stack.length - 1; pos >= 0; pos--) {
+	        if (stack[pos] == tagName) break;
+	      }
+	    }
+	
+	    if (pos >= 0) {
+	      // Close all the open elements, up the stack
+	      for (i = stack.length - 1; i >= pos; i--)
+	        if (handler.end) handler.end(stack[i]);
+	
+	      // Remove the open elements from the stack
+	      stack.length = pos;
+	    }
+	  }
+	}
+	
+	var hiddenPre=document.createElement("pre");
+	/**
+	 * decodes all entities into regular string
+	 * @param value
+	 * @returns {string} A string with decoded entities.
+	 */
+	function decodeEntities(value) {
+	  if (!value) { return ''; }
+	
+	  hiddenPre.innerHTML = value.replace(/</g,"&lt;");
+	  // innerText depends on styling as it doesn't display hidden elements.
+	  // Therefore, it's better to use textContent not to cause unnecessary reflows.
+	  return hiddenPre.textContent;
+	}
+	
+	/**
+	 * Escapes all potentially dangerous characters, so that the
+	 * resulting string can be safely inserted into attribute or
+	 * element text.
+	 * @param value
+	 * @returns {string} escaped text
+	 */
+	function encodeEntities(value) {
+	  return value.
+	    replace(/&/g, '&amp;').
+	    replace(SURROGATE_PAIR_REGEXP, function(value) {
+	      var hi = value.charCodeAt(0);
+	      var low = value.charCodeAt(1);
+	      return '&#' + (((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000) + ';';
+	    }).
+	    replace(NON_ALPHANUMERIC_REGEXP, function(value) {
+	      return '&#' + value.charCodeAt(0) + ';';
+	    }).
+	    replace(/</g, '&lt;').
+	    replace(/>/g, '&gt;');
+	}
+	
+	/**
+	 * create an HTML/XML writer which writes to buffer
+	 * @param {Array} buf use buf.jain('') to get out sanitized html string
+	 * @returns {object} in the form of {
+	 *     start: function(tag, attrs, unary) {},
+	 *     end: function(tag) {},
+	 *     chars: function(text) {},
+	 *     comment: function(text) {}
+	 * }
+	 */
+	function htmlSanitizeWriter(buf, uriValidator) {
+	  var ignore = false;
+	  var out = angular.bind(buf, buf.push);
+	  return {
+	    start: function(tag, attrs, unary) {
+	      tag = angular.lowercase(tag);
+	      if (!ignore && specialElements[tag]) {
+	        ignore = tag;
+	      }
+	      if (!ignore && validElements[tag] === true) {
+	        out('<');
+	        out(tag);
+	        angular.forEach(attrs, function(value, key) {
+	          var lkey=angular.lowercase(key);
+	          var isImage = (tag === 'img' && lkey === 'src') || (lkey === 'background');
+	          if (validAttrs[lkey] === true &&
+	            (uriAttrs[lkey] !== true || uriValidator(value, isImage))) {
+	            out(' ');
+	            out(key);
+	            out('="');
+	            out(encodeEntities(value));
+	            out('"');
+	          }
+	        });
+	        out(unary ? '/>' : '>');
+	      }
+	    },
+	    end: function(tag) {
+	        tag = angular.lowercase(tag);
+	        if (!ignore && validElements[tag] === true) {
+	          out('</');
+	          out(tag);
+	          out('>');
+	        }
+	        if (tag == ignore) {
+	          ignore = false;
+	        }
+	      },
+	    chars: function(chars) {
+	        if (!ignore) {
+	          out(encodeEntities(chars));
+	        }
+	      }
+	  };
+	}
+	
+	
+	// define ngSanitize module and register $sanitize service
+	angular.module('ngSanitize', []).provider('$sanitize', $SanitizeProvider);
+	
+	/* global sanitizeText: false */
+	
+	/**
+	 * @ngdoc filter
+	 * @name linky
+	 * @kind function
+	 *
+	 * @description
+	 * Finds links in text input and turns them into html links. Supports http/https/ftp/mailto and
+	 * plain email address links.
+	 *
+	 * Requires the {@link ngSanitize `ngSanitize`} module to be installed.
+	 *
+	 * @param {string} text Input text.
+	 * @param {string} target Window (_blank|_self|_parent|_top) or named frame to open links in.
+	 * @returns {string} Html-linkified text.
+	 *
+	 * @usage
+	   <span ng-bind-html="linky_expression | linky"></span>
+	 *
+	 * @example
+	   <example module="linkyExample" deps="angular-sanitize.js">
+	     <file name="index.html">
+	       <script>
+	         angular.module('linkyExample', ['ngSanitize'])
+	           .controller('ExampleController', ['$scope', function($scope) {
+	             $scope.snippet =
+	               'Pretty text with some links:\n'+
+	               'http://angularjs.org/,\n'+
+	               'mailto:us@somewhere.org,\n'+
+	               'another@somewhere.org,\n'+
+	               'and one more: ftp://127.0.0.1/.';
+	             $scope.snippetWithTarget = 'http://angularjs.org/';
+	           }]);
+	       </script>
+	       <div ng-controller="ExampleController">
+	       Snippet: <textarea ng-model="snippet" cols="60" rows="3"></textarea>
+	       <table>
+	         <tr>
+	           <td>Filter</td>
+	           <td>Source</td>
+	           <td>Rendered</td>
+	         </tr>
+	         <tr id="linky-filter">
+	           <td>linky filter</td>
+	           <td>
+	             <pre>&lt;div ng-bind-html="snippet | linky"&gt;<br>&lt;/div&gt;</pre>
+	           </td>
+	           <td>
+	             <div ng-bind-html="snippet | linky"></div>
+	           </td>
+	         </tr>
+	         <tr id="linky-target">
+	          <td>linky target</td>
+	          <td>
+	            <pre>&lt;div ng-bind-html="snippetWithTarget | linky:'_blank'"&gt;<br>&lt;/div&gt;</pre>
+	          </td>
+	          <td>
+	            <div ng-bind-html="snippetWithTarget | linky:'_blank'"></div>
+	          </td>
+	         </tr>
+	         <tr id="escaped-html">
+	           <td>no filter</td>
+	           <td><pre>&lt;div ng-bind="snippet"&gt;<br>&lt;/div&gt;</pre></td>
+	           <td><div ng-bind="snippet"></div></td>
+	         </tr>
+	       </table>
+	     </file>
+	     <file name="protractor.js" type="protractor">
+	       it('should linkify the snippet with urls', function() {
+	         expect(element(by.id('linky-filter')).element(by.binding('snippet | linky')).getText()).
+	             toBe('Pretty text with some links: http://angularjs.org/, us@somewhere.org, ' +
+	                  'another@somewhere.org, and one more: ftp://127.0.0.1/.');
+	         expect(element.all(by.css('#linky-filter a')).count()).toEqual(4);
+	       });
+	
+	       it('should not linkify snippet without the linky filter', function() {
+	         expect(element(by.id('escaped-html')).element(by.binding('snippet')).getText()).
+	             toBe('Pretty text with some links: http://angularjs.org/, mailto:us@somewhere.org, ' +
+	                  'another@somewhere.org, and one more: ftp://127.0.0.1/.');
+	         expect(element.all(by.css('#escaped-html a')).count()).toEqual(0);
+	       });
+	
+	       it('should update', function() {
+	         element(by.model('snippet')).clear();
+	         element(by.model('snippet')).sendKeys('new http://link.');
+	         expect(element(by.id('linky-filter')).element(by.binding('snippet | linky')).getText()).
+	             toBe('new http://link.');
+	         expect(element.all(by.css('#linky-filter a')).count()).toEqual(1);
+	         expect(element(by.id('escaped-html')).element(by.binding('snippet')).getText())
+	             .toBe('new http://link.');
+	       });
+	
+	       it('should work with the target property', function() {
+	        expect(element(by.id('linky-target')).
+	            element(by.binding("snippetWithTarget | linky:'_blank'")).getText()).
+	            toBe('http://angularjs.org/');
+	        expect(element(by.css('#linky-target a')).getAttribute('target')).toEqual('_blank');
+	       });
+	     </file>
+	   </example>
+	 */
+	angular.module('ngSanitize').filter('linky', ['$sanitize', function($sanitize) {
+	  var LINKY_URL_REGEXP =
+	        /((ftp|https?):\/\/|(www\.)|(mailto:)?[A-Za-z0-9._%+-]+@)\S*[^\s.;,(){}<>"\u201d\u2019]/i,
+	      MAILTO_REGEXP = /^mailto:/i;
+	
+	  return function(text, target) {
+	    if (!text) return text;
+	    var match;
+	    var raw = text;
+	    var html = [];
+	    var url;
+	    var i;
+	    while ((match = raw.match(LINKY_URL_REGEXP))) {
+	      // We can not end in these as they are sometimes found at the end of the sentence
+	      url = match[0];
+	      // if we did not match ftp/http/www/mailto then assume mailto
+	      if (!match[2] && !match[4]) {
+	        url = (match[3] ? 'http://' : 'mailto:') + url;
+	      }
+	      i = match.index;
+	      addText(raw.substr(0, i));
+	      addLink(url, match[0].replace(MAILTO_REGEXP, ''));
+	      raw = raw.substring(i + match[0].length);
+	    }
+	    addText(raw);
+	    return $sanitize(html.join(''));
+	
+	    function addText(text) {
+	      if (!text) {
+	        return;
+	      }
+	      html.push(sanitizeText(text));
+	    }
+	
+	    function addLink(url, text) {
+	      html.push('<a ');
+	      if (angular.isDefined(target)) {
+	        html.push('target="',
+	                  target,
+	                  '" ');
+	      }
+	      html.push('href="',
+	                url.replace(/"/g, '&quot;'),
+	                '">');
+	      addText(text);
+	      html.push('</a>');
+	    }
+	  };
+	}]);
+	
+	
+	})(window, window.angular);
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(11);
+
+/***/ },
+/* 11 */
 /***/ function(module, exports) {
 
 	/**
@@ -31094,13 +31792,13 @@
 
 
 /***/ },
-/* 9 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(10);
+	module.exports = __webpack_require__(13);
 
 /***/ },
-/* 10 */
+/* 13 */
 /***/ function(module, exports) {
 
 	/**
@@ -35034,14 +35732,14 @@
 
 
 /***/ },
-/* 11 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(12);
-	__webpack_require__(13);
+	module.exports = __webpack_require__(15);
+	__webpack_require__(16);
 
 /***/ },
-/* 12 */
+/* 15 */
 /***/ function(module, exports) {
 
 	/*!
@@ -57308,16 +58006,16 @@
 	})(window, window.angular);
 
 /***/ },
-/* 13 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(14);
+	var content = __webpack_require__(17);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(16)(content, {});
+	var update = __webpack_require__(19)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -57334,10 +58032,10 @@
 	}
 
 /***/ },
-/* 14 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(15)();
+	exports = module.exports = __webpack_require__(18)();
 	// imports
 	
 	
@@ -57348,7 +58046,7 @@
 
 
 /***/ },
-/* 15 */
+/* 18 */
 /***/ function(module, exports) {
 
 	/*
@@ -57404,7 +58102,7 @@
 
 
 /***/ },
-/* 16 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -57629,7 +58327,7 @@
 
 
 /***/ },
-/* 17 */
+/* 20 */
 /***/ function(module, exports) {
 
 	/**
@@ -57638,7 +58336,7 @@
 	
 	'use strict';
 	
-	angular.module('Bot', ['ngRoute', 'ngResource', 'ngAria', 'ngAnimate', 'ngMaterial']).constant('host', 'http://127.0.0.1:5080').run(runBlock);
+	angular.module('Bot', ['ngRoute', 'ngResource', 'ngAria', 'ngAnimate', 'ngMaterial', 'ngSanitize']).constant('host', 'http://127.0.0.1:5080').run(runBlock);
 	
 	runBlock.$inject = ['servicesConfigure'];
 	function runBlock(servicesConfigure) {
@@ -57647,8 +58345,8 @@
 	}
 
 /***/ },
-/* 18 */
-/***/ function(module, exports) {
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
 
 	/**
 	 * Created on 10/12/15.
@@ -57658,9 +58356,15 @@
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var evtSearchInput = 'evtSearchInput';
+	var eventSearchInput = 'eventSearchInput';
+	var tipsTypeNone = 'none';
+	var tipsTypeMore = 'more';
+	var tipsTypeProgress = 'progress';
+	var tipsTypeMessage = 'message';
 	
 	var MainController = (function () {
 	  function MainController($rootScope, $scope, $routeParams, services) {
@@ -57670,10 +58374,16 @@
 	    this.$routeParams = $routeParams;
 	    this.services = services;
 	    console.log('hello bot');
+	
 	    this.params = new Map();
+	    this.results = new Map();
+	    this.types = new Map();
+	
+	    this.showTips(tipsTypeNone);
+	
 	    this.parseRouteParams();
 	
-	    $scope.$on(evtSearchInput, this.handleEvent.bind(this));
+	    $scope.$on(eventSearchInput, this.handleEvent.bind(this));
 	  }
 	
 	  _createClass(MainController, [{
@@ -57699,6 +58409,7 @@
 	        this.params.set('type', params.type || 'web');
 	        this.params.set('rsz', params.rsz || 8);
 	
+	        this.showTips(tipsTypeProgress);
 	        this.search();
 	      }
 	    }
@@ -57710,12 +58421,16 @@
 	      if (q) {
 	
 	        console.log('searching', input);
+	        this.params.clear();
 	        this.params.set('q', q);
 	        this.params.set('target', 'google');
 	        this.params.set('start', 0);
 	        this.params.set('type', 'web');
 	        this.params.set('rsz', 8);
 	
+	        this.types.clear();
+	        this.results.clear();
+	        this.showTips(tipsTypeProgress);
 	        this.search();
 	      }
 	    }
@@ -57726,13 +58441,17 @@
 	      var start = this.params.get('start');
 	      var rsz = this.params.get('rsz');
 	      this.params.set('start', start + rsz);
+	      this.showTips(tipsTypeProgress);
 	      this.search();
 	    }
 	  }, {
 	    key: 'search',
 	    value: function search() {
+	      var _this = this;
 	
 	      console.log(this.params);
+	      this.showNoMore = false;
+	      this.showMoreCard = false;
 	      var req = new this.services.Request({
 	        q: this.params.get('q'),
 	        target: this.params.get('target'),
@@ -57744,10 +58463,80 @@
 	      req.$search().then(function (data) {
 	
 	        console.log(data);
+	        if (data.message) {
+	
+	          if (_this.results.size === 1) {
+	            _this.noMoreMessage = 'No more results.';
+	          } else if (_this.results.size === 0) {
+	            _this.noMoreMessage = 'No results.';
+	          }
+	          _this.showTips(tipsTypeMessage);
+	        } else {
+	
+	          if (data.data) {
+	
+	            var type = 'web';
+	            switch (data.type) {
+	              case 'images':
+	              case 'books':
+	              case 'video':
+	              case 'news':
+	                type = data.type;
+	                break;
+	              default:
+	                type = 'web';
+	                break;
+	            }
+	
+	            if (_this.types.get(type)) {
+	
+	              var results = _this.results.get(type);
+	              _this.results.set(type, [].concat(_toConsumableArray(results), _toConsumableArray(data.data.results)));
+	            } else {
+	              _this.types.clear();
+	              _this.results.clear();
+	              _this.types.set(type, true);
+	              _this.results.set(type, data.data.results);
+	            }
+	            _this.showTips(tipsTypeMore);
+	          }
+	        }
 	      })['catch'](function (err) {
 	
 	        console.log(err);
+	        _this.noMoreMessage = err.message;
+	        _this.showTips(tipsTypeMessage);
 	      });
+	    }
+	  }, {
+	    key: 'showTips',
+	    value: function showTips(type) {
+	
+	      if (type === tipsTypeMore) {
+	
+	        this.progressMode = null;
+	        this.showMoreCard = true;
+	        this.showMoreButton = true;
+	        this.showNoMore = false;
+	      } else if (type === tipsTypeProgress) {
+	
+	        this.progressMode = 'indeterminate';
+	        this.showMoreCard = false;
+	        this.showMoreButton = false;
+	        this.showNoMore = false;
+	      } else if (type === tipsTypeMessage) {
+	
+	        this.progressMode = null;
+	        this.showMoreCard = true;
+	        this.showMoreButton = false;
+	        this.showNoMore = true;
+	      } else if (type === tipsTypeNone) {
+	
+	        this.progressMode = null;
+	        this.showMoreCard = false;
+	        this.showMoreButton = false;
+	        this.showNoMore = false;
+	      }
 	    }
 	  }]);
 	
@@ -57760,7 +58549,7 @@
 	
 	    this.$rootScope = $rootScope;
 	    this.data = {
-	      placeholder: '请输入关键字或`!?`获取帮助'
+	      placeholder: '输入关键字搜索或`!?`获取帮助'
 	    };
 	
 	    var q = $routeParams.q;
@@ -57774,7 +58563,7 @@
 	    key: 'search',
 	    value: function search() {
 	
-	      this.$rootScope.$broadcast(evtSearchInput, this.data.input);
+	      this.$rootScope.$broadcast(eventSearchInput, this.data.input);
 	    }
 	  }]);
 	
@@ -57782,15 +58571,41 @@
 	})();
 	
 	var FooterController = (function () {
-	  function FooterController($scope) {
+	  function FooterController($scope, $mdDialog) {
 	    _classCallCheck(this, FooterController);
+	
+	    this.$mdDialog = $mdDialog;
+	    this.data = ['直接输入进行谷歌网页搜索，支持谷歌搜索规则', '`!?` `!help` 获取帮助', '`!img` `!image` `!images` 搜索谷歌图片。例：`!img google`', '`!video` 搜索谷歌视频。例：`!video google`', '`!news` 搜索谷歌新闻', '`!books` 搜索谷歌图书', '`!gh` `!github` 搜索 github.com', '`!so` `!sof` `!stackoverflow` 搜索 stackoverflow.com', '`!tw` `!twitter` 搜索 twitter.com', '`!wk` `!wiki` `!wikipedia` 搜索 wikipedia.com'];
 	  }
 	
 	  _createClass(FooterController, [{
 	    key: 'help',
-	    value: function help() {
+	    value: function help(event) {
 	
 	      console.log('help!!!help!!!help!!!');
+	
+	      var html = __webpack_require__(22)();
+	      var icon = __webpack_require__(25);
+	      this.$mdDialog.show({
+	        controller: function controller($scope, $mdDialog, data, icon) {
+	          $scope.icon = icon;
+	          $scope.data = data;
+	          $scope.close = function () {
+	            $mdDialog.hide();
+	          };
+	        },
+	        template: html,
+	        parent: angular.element(document.body),
+	        targetEvent: event,
+	        clickOutsideToClose: true,
+	        locals: {
+	          icon: icon,
+	          data: this.data
+	        }
+	      }).then(function () {
+	
+	        console.log('close');
+	      });
 	    }
 	  }]);
 	
@@ -57798,71 +58613,6 @@
 	})();
 	
 	angular.module('Bot').controller('MainController', MainController).controller('HeaderController', HeaderController).controller('FooterController', FooterController);
-
-/***/ },
-/* 19 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	/**
-	 * Created on 10/12/15.
-	 */
-
-/***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	angular.module('Bot').config(config);
-	
-	config.$inject = ['$routeProvider', '$locationProvider'];
-	function config($routeProvider, $locationProvider) {
-	
-	  function templateWithName(name) {
-	
-	    return __webpack_require__(21)("./" + name + '.jade');
-	  }
-	
-	  var main = {
-	    template: templateWithName('main'),
-	    controller: 'MainController',
-	    controllerAs: 'main'
-	  };
-	
-	  $routeProvider.when('/', main).when('/search', main).otherwise({
-	    redirectTo: '/'
-	  });
-	
-	  $locationProvider.html5Mode(true);
-	}
-
-/***/ },
-/* 21 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var map = {
-		"./main.jade": 22,
-		"./partial_images.jade": 25,
-		"./partial_news.jade": 26,
-		"./partial_video.jade": 27,
-		"./partial_web.jade": 28,
-		"./searchbox.jade": 29
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 21;
-
 
 /***/ },
 /* 22 */
@@ -57875,7 +58625,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 	
-	buf.push("<header ng-controller=\"HeaderController as header\" ng-cloak=\"ng-cloak\"><searchbox sb-data=\"header.data\" sb-search=\"header.search()\"></searchbox></header><main><div></div></main><footer ng-controller=\"FooterController as footer\" ng-cloak=\"ng-cloak\"><div class=\"help-notes\"><md-content layout=\"row\" layout-align=\"center center\"><md-button ng-click=\"footer.help()\" class=\"md-primary\">help</md-button></md-content></div></footer><!--div(layout='column' ng-cloak)--><!--  md-content(layout-padding layout='column')--><!--    form(ng-submit='$event.preventDefault()')--><!--      md-autocomplete(placeholder='输入关键词或输入`??`获取帮助')-->");;return buf.join("");
+	buf.push("<md-dialog aria-label=\"help\" ng-cloak=\"ng-cloak\"><form><md-toolbar><div class=\"md-toolbar-tools\"><h2>帮助</h2><span class=\"flex\"></span><md-button ng-click=\"close()\" style=\"float:right;\" class=\"md-icon-button\"><md-icon md-svg-icon=\"/static/js/{{ icon }}\" aria-label=\"close\"></md-icon></md-button></div></md-toolbar><md-dialog-content style=\"max-width:800px;max-height:810px;\"><div class=\"md-content\"><pre ng-repeat=\"item in data\">{{ item }}</pre></div></md-dialog-content><div layout=\"row\" class=\"md-actions\"><md-button ng-click=\"close()\" aria-label=\"close\">Close</md-button></div></form></md-dialog>");;return buf.join("");
 	}
 
 /***/ },
@@ -58140,57 +58890,73 @@
 /* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(23);
-	
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-	
-	;return buf.join("");
-	}
+	module.exports = __webpack_require__.p + "bd5cf76224f94d28e22ef19ce3115210.svg"
 
 /***/ },
 /* 26 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	var jade = __webpack_require__(23);
-	
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-	
-	;return buf.join("");
-	}
+	"use strict";
+
+	/**
+	 * Created on 10/12/15.
+	 */
 
 /***/ },
 /* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(23);
+	'use strict';
 	
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
+	angular.module('Bot').config(config);
 	
-	;return buf.join("");
+	config.$inject = ['$routeProvider', '$locationProvider'];
+	function config($routeProvider, $locationProvider) {
+	
+	  function templateWithName(name) {
+	
+	    return __webpack_require__(28)("./" + name + '.jade');
+	  }
+	
+	  var main = {
+	    template: templateWithName('main'),
+	    controller: 'MainController',
+	    controllerAs: 'main'
+	  };
+	
+	  $routeProvider.when('/', main).when('/search', main).otherwise({
+	    redirectTo: '/'
+	  });
+	
+	  $locationProvider.html5Mode(true);
 	}
 
 /***/ },
 /* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(23);
-	
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-	
-	;return buf.join("");
-	}
+	var map = {
+		"./help.jade": 22,
+		"./main.jade": 29,
+		"./partial_images.jade": 31,
+		"./partial_news.jade": 32,
+		"./partial_video.jade": 33,
+		"./partial_web.jade": 30,
+		"./searchbox.jade": 34
+	};
+	function webpackContext(req) {
+		return __webpack_require__(webpackContextResolve(req));
+	};
+	function webpackContextResolve(req) {
+		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
+	};
+	webpackContext.keys = function webpackContextKeys() {
+		return Object.keys(map);
+	};
+	webpackContext.resolve = webpackContextResolve;
+	module.exports = webpackContext;
+	webpackContext.id = 28;
+
 
 /***/ },
 /* 29 */
@@ -58202,12 +58968,82 @@
 	var buf = [];
 	var jade_mixins = {};
 	var jade_interp;
-	
-	buf.push("<div id=\"searchbox\"><div class=\"sb-container\"><div class=\"sb-container-box\"></div></div><div id=\"sb-form-container\"><form action=\"\" method=\"post\" ng-submit=\"$event.preventDefault()\" class=\"sb-form\"><div class=\"sb-content-a\"><div class=\"sb-content-b\"><div class=\"sb-content-c\"><div class=\"sb-content-d\"><div class=\"sb-content-e\"><div class=\"sb-content-f\"><div class=\"sb-content-g\"><div class=\"sb-content-h\"><input type=\"search\" placeholder=\"{{ data.placeholder }}\" ng-model=\"data.input\" class=\"sb-content-input\"/></div></div></div></div><div class=\"sb-button-a\"><div class=\"sb-button-b\"><div class=\"sb-button-c\"><div class=\"sb-button-d\"><button type=\"submit\" ng-click=\"search()\" class=\"sb-button-btn\"><span class=\"sb-button-ico\"></span></button></div></div></div></div></div></div></div></div></form></div></div>");;return buf.join("");
+	;var locals_for_with = (locals || {});(function (undefined) {
+	buf.push("<div id=\"container\"><header ng-controller=\"HeaderController as header\" ng-cloak=\"ng-cloak\"><searchbox sb-data=\"header.data\" sb-search=\"header.search()\"></searchbox></header><main><div id=\"search-results\">" + (null == (jade_interp = __webpack_require__(30).call(this, locals)) ? "" : jade_interp) + "<div id=\"load-more\" ng-show=\"main.showMoreCard\"><md-content><md-card><md-card-content><div layout=\"row\" layout-align=\"space-around center\"><md-button ng-click=\"main.goNext()\" ng-show=\"main.showMoreButton\" class=\"md-primary\">more...</md-button><p ng-show=\"main.showNoMore\">{{ main.noMoreMessage }}</p></div></md-card-content></md-card></md-content></div><div id=\"progress-circular\" ng-show=\"main.progressMode\"><div layout=\"row\" layout-align=\"space-around center\"><md-progress-circular md-mode=\"{{ main.progressMode }}\" md-diameter=\"30px\" class=\"md-hue-2\"></md-progress-circular></div></div></div></main></div><footer ng-controller=\"FooterController as footer\" ng-cloak=\"ng-cloak\"><div class=\"help-notes\"><md-content layout=\"row\" layout-align=\"center center\"><md-button ng-click=\"footer.help($event)\" class=\"md-primary\">help</md-button></md-content></div></footer>");}.call(this,"undefined" in locals_for_with?locals_for_with.undefined: false?undefined:undefined));;return buf.join("");
 	}
 
 /***/ },
 /* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(23);
+	
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+	
+	buf.push("<div id=\"web-results\" ng-show=\"main.types.get(&quot;web&quot;)\" ng-cloak=\"ng-cloak\"><md-content><md-card ng-repeat=\"result in main.results.get(&quot;web&quot;)\"><md-card-content><h3 class=\"md-title\"><a href=\"{{ result.unescapedUrl }}\" target=\"_blank\" ng-bind-html=\"result.titleNoFormatting\"></a></h3><p ng-bind-html=\"result.content\"></p><p><a href=\"{{ result.unescapedUrl }}\" target=\"_blank\">{{ result.unescapedUrl }}</a></p></md-card-content></md-card></md-content></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(23);
+	
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+	
+	;return buf.join("");
+	}
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(23);
+	
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+	
+	;return buf.join("");
+	}
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(23);
+	
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+	
+	;return buf.join("");
+	}
+
+/***/ },
+/* 34 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(23);
+	
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+	
+	buf.push("<div id=\"searchbox\"><div id=\"sb-form-container\"><form action=\"\" method=\"post\" ng-submit=\"$event.preventDefault()\" class=\"sb-form\"><div class=\"sb-content-a\"><div class=\"sb-content-b\"><div class=\"sb-content-c\"><div class=\"sb-content-d\"><div class=\"sb-content-e\"><div class=\"sb-content-f\"><div class=\"sb-content-g\"><div class=\"sb-content-h\"><input type=\"search\" placeholder=\"{{ data.placeholder }}\" ng-model=\"data.input\" class=\"sb-content-input\"/></div></div></div></div><div class=\"sb-button-a\"><div class=\"sb-button-b\"><div class=\"sb-button-c\"><div class=\"sb-button-d\"><button type=\"submit\" ng-click=\"search()\" class=\"sb-button-btn\"><span class=\"sb-button-ico\"></span></button></div></div></div></div></div></div></div></div></form></div></div>");;return buf.join("");
+	}
+
+/***/ },
+/* 35 */
 /***/ function(module, exports) {
 
 	/**
@@ -58237,7 +59073,7 @@
 	angular.module('Bot').constant('services', {}).factory('Request', Request).factory('servicesConfigure', servicesConfigure);
 
 /***/ },
-/* 31 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -58261,7 +59097,7 @@
 	      data: '=sbData',
 	      search: '&sbSearch'
 	    };
-	    this.template = __webpack_require__(29);
+	    this.template = __webpack_require__(34);
 	    DOCUMENT.set(this, $document);
 	  }
 	
@@ -58284,11 +59120,10 @@
 	
 	      function changePosition() {
 	
-	        console.log('changePosition', scope.data.position);
 	        if (scope.data.position === 'keep') return;
 	
 	        var $document = DOCUMENT.get(SearchBox.instance);
-	        var height = ($document[0].body.clientHeight - 38) * 0.5;
+	        var height = ($document[0].body.clientHeight - 38) * 0.38;
 	        var searchbox = angular.element(elem.children()[0]);
 	
 	        if (!scope.data.position || scope.data.position === 'middle') {
@@ -58317,16 +59152,16 @@
 	angular.module('Bot').directive('searchbox', SearchBox.directiveFactory);
 
 /***/ },
-/* 32 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(33);
+	var content = __webpack_require__(38);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(16)(content, {});
+	var update = __webpack_require__(19)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -58343,30 +59178,30 @@
 	}
 
 /***/ },
-/* 33 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(15)();
+	exports = module.exports = __webpack_require__(18)();
 	// imports
 	
 	
 	// module
-	exports.push([module.id, "body {\n  background-color: #f2f2f2;\n}\nfooter {\n  position: absolute;\n  bottom: 10px;\n  width: 100%;\n  background-color: #f2f2f2;\n}\nfooter md-content {\n  background-color: #f2f2f2;\n}\n", ""]);
+	exports.push([module.id, "body {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n#container {\n  background-color: #f2f2f2;\n  font-family: arial, sans-serif;\n  height: auto;\n  min-height: 100%;\n  margin-bottom: -50px;\n}\nheader {\n  padding-bottom: 60px;\n}\nmain {\n  background-color: #f2f2f2;\n  padding-bottom: 50px;\n}\nmain md-content {\n  background-color: #f2f2f2;\n}\nmain md-content md-card {\n  margin-left: 0;\n  margin-right: 0;\n}\nmain md-content md-card md-card-content {\n  padding: 8px 16px;\n}\nmain md-content md-card h3 {\n  font-size: 18px;\n  margin-bottom: 5px;\n  margin-top: 5px;\n}\nmain md-content md-card h3 a {\n  text-decoration: none;\n  color: #1a0dab;\n}\nmain md-content md-card p {\n  font-size: small;\n  margin-top: 5px;\n  margin-bottom: 5px;\n}\nmain md-content md-card p a {\n  text-decoration: none;\n  font-style: normal;\n  color: #006621;\n}\n#load-more md-card-content {\n  padding: 0;\n}\n#load-more md-card-content div .md-button {\n  width: 100%;\n  margin: 0;\n}\n#load-more md-card-content div p {\n  font-style: normal;\n  text-align: center;\n  width: 100%;\n  margin: 10px;\n}\nfooter {\n  height: 40px;\n  width: 100%;\n  background-color: #f2f2f2;\n}\nfooter md-content {\n  background-color: #f2f2f2;\n}\n@media screen and (max-width: 799px) {\n  main {\n    margin-left: 8px;\n    margin-right: 8px;\n  }\n}\n@media screen and (min-width: 800px) {\n  main {\n    margin-left: 25%;\n    margin-right: 25%;\n    width: 50%;\n  }\n}\n", ""]);
 	
 	// exports
 
 
 /***/ },
-/* 34 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(35);
+	var content = __webpack_require__(40);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(16)(content, {});
+	var update = __webpack_require__(19)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -58383,21 +59218,21 @@
 	}
 
 /***/ },
-/* 35 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(15)();
+	exports = module.exports = __webpack_require__(18)();
 	// imports
 	
 	
 	// module
-	exports.push([module.id, "#searchbox {\n  display: block;\n}\n.sb-container {\n  background: #f2f2f2;\n  position: absolute;\n  width: 100%;\n  display: block;\n}\n.sb-container-box {\n  background-color: #f2f2f2;\n  display: block;\n}\n#sb-form-container {\n  background-color: #fff;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  border-radius: 2px;\n}\n.sb-form {\n  width: 100%;\n  display: block;\n  background: none;\n}\n.sb-content-a {\n  position: relative;\n  display: block;\n}\n.sb-content-b {\n  display: block;\n  box-sizing: border-box;\n}\n.sb-content-c {\n  text-align: left;\n  position: relative;\n  display: block;\n}\n.sb-content-d {\n  line-height: 0;\n  overflow: visible;\n  white-space: nowrap;\n}\n.sb-content-e {\n  display: inline-block;\n  width: 100%;\n  height: 38px;\n  vertical-align: top;\n}\n.sb-content-f {\n  height: 38px;\n  vertical-align: top;\n  background: white;\n  box-sizing: border-box;\n  display: block;\n}\n.sb-content-g {\n  box-sizing: border-box;\n  height: 100%;\n  overflow: hidden;\n  padding: 6px 9px 0;\n  display: block;\n}\n.sb-content-h {\n  position: relative;\n  display: block;\n}\n.sb-content-input {\n  border: none;\n  padding: 0;\n  margin: 0;\n  width: 100%;\n  position: absolute;\n  z-index: 6;\n  left: 0;\n  outline: none;\n  background: url(data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw%3D%3D) transparent;\n  font: 17px arial, sans-serif;\n  line-height: 26px !important;\n  height: 26px !important;\n  box-sizing: border-box;\n}\n.sb-button-a {\n  display: inline-block;\n  vertical-align: top;\n  width: 38px;\n}\n.sb-button-b {\n  display: block;\n}\n.sb-button-c {\n  border: 0;\n  display: block;\n}\n.sb-button-d {\n  border-radius: 0 2px 2px 0;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  height: 38px;\n  width: 38px;\n  min-width: 38px !important;\n  margin: 0;\n  padding: 0;\n  border: none;\n  background: #4285f4 none;\n  text-align: center;\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n}\n.sb-button-btn {\n  background: transparent;\n  border: 0;\n  font-size: 0;\n  height: 30px;\n  outline: 0;\n  width: 100%;\n  cursor: default;\n}\n.sb-button-ico {\n  color: transparent;\n  display: inline-block;\n  height: 24px;\n  width: 24px;\n  background-image: url(" + __webpack_require__(36) + ");\n  background-size: 24px 24px;\n  margin: 7px auto;\n  cursor: default;\n}\n@media screen and (max-width: 799px) {\n  #searchbox {\n    margin-left: 8px;\n    margin-right: 8px;\n    position: relative;\n    min-height: 400px;\n  }\n  .sb-content-d {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n  }\n}\n@media screen and (min-width: 800px) {\n  #searchbox {\n    margin-left: 25%;\n    margin-right: 25%;\n    width: 50%;\n    position: absolute;\n  }\n  .sb-content-d {\n    display: block;\n  }\n  .sb-content-f {\n    padding-right: 38px;\n  }\n}\n", ""]);
+	exports.push([module.id, "#searchbox {\n  display: block;\n}\n#sb-form-container {\n  background-color: #fff;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  border-radius: 2px;\n}\n.sb-form {\n  width: 100%;\n  display: block;\n  background: none;\n}\n.sb-content-a {\n  position: relative;\n  display: block;\n}\n.sb-content-b {\n  display: block;\n  box-sizing: border-box;\n}\n.sb-content-c {\n  text-align: left;\n  position: relative;\n  display: block;\n}\n.sb-content-d {\n  line-height: 0;\n  overflow: visible;\n  white-space: nowrap;\n}\n.sb-content-e {\n  display: inline-block;\n  width: 100%;\n  height: 38px;\n  vertical-align: top;\n}\n.sb-content-f {\n  height: 38px;\n  vertical-align: top;\n  background: white;\n  box-sizing: border-box;\n  display: block;\n}\n.sb-content-g {\n  box-sizing: border-box;\n  height: 100%;\n  overflow: hidden;\n  padding: 6px 9px 0;\n  display: block;\n}\n.sb-content-h {\n  position: relative;\n  display: block;\n}\n.sb-content-input {\n  border: none;\n  padding: 0;\n  margin: 0;\n  width: 100%;\n  position: absolute;\n  z-index: 6;\n  left: 0;\n  outline: none;\n  background: url(data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw%3D%3D) transparent;\n  font: 16px arial, sans-serif;\n  line-height: 26px !important;\n  height: 26px !important;\n  box-sizing: border-box;\n}\n.sb-button-a {\n  display: inline-block;\n  vertical-align: top;\n  width: 38px;\n}\n.sb-button-b {\n  display: block;\n}\n.sb-button-c {\n  border: 0;\n  display: block;\n}\n.sb-button-d {\n  border-radius: 0 2px 2px 0;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  height: 38px;\n  width: 38px;\n  min-width: 38px !important;\n  margin: 0;\n  padding: 0;\n  border: none;\n  background: #4285f4 none;\n  text-align: center;\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n}\n.sb-button-btn {\n  background: transparent;\n  border: 0;\n  font-size: 0;\n  height: 30px;\n  outline: 0;\n  width: 100%;\n  cursor: default;\n}\n.sb-button-ico {\n  color: transparent;\n  display: inline-block;\n  height: 24px;\n  width: 24px;\n  background-image: url(" + __webpack_require__(41) + ");\n  background-size: 24px 24px;\n  margin: 7px auto;\n  cursor: default;\n}\n@media screen and (max-width: 799px) {\n  #searchbox {\n    margin-left: 8px;\n    margin-right: 8px;\n    position: relative;\n    min-height: 400px;\n  }\n  .sb-content-d {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n  }\n}\n@media screen and (min-width: 800px) {\n  #searchbox {\n    margin-left: 25%;\n    margin-right: 25%;\n    width: 50%;\n    position: absolute;\n  }\n  .sb-content-d {\n    display: block;\n  }\n  .sb-content-f {\n    padding-right: 38px;\n  }\n}\n", ""]);
 	
 	// exports
 
 
 /***/ },
-/* 36 */
+/* 41 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAuBJREFUaAXtmM1qFEEUhdOC2QhZxIVBRMZFss0uCPoASRYivkB8i+QVkkUgj6A7t+6FCMGtuJwRBEWy8Q9FF8bF+J1JX7m0NcN0d90wrXPhTE1VdZ1zb3X9dS0szG3eA/93DxRtwh8Oh2u0F66Dq+ATOAWDoigGpLNnON0DB6APJpnq90FvJqLAkWVwCH6COqbn1W45IpCphhDi64g/BTcrTnwjfwLeAw0fDaMb4C5YAt7ekbnH0HrlC8P/4/w2+A68HZPZBIspB1Re1j8n9Sae7VSbkDLE1oF3/jP5+3XE9DxQOzPx6Y3GGiIa829NlfQ1WG2iqnZle5KRiTdkTvzxDwFNPDP1YCPnjVDtgX8Th1aXPUVIS6VfbWoNm3EOwanhZCb+3rhnW5VDrHXe7LgVWaUxpH5iH1Sq82QR6Zv3pJt5WM9ZxOe4+zm5R1yQrzmBr/xPLpVNhcUHxGumo0hju5Ro6QlP2HjOEs80Lir5tPmZeT0rmzpNBaCDmZl22AjzvF6vtlYqAB0HzHQ8iDDP6/Vqa6UCyEY+wRvvtNeb0CRdlQrg1D2qg1mEeV6v116LpaFTq1AyYoLo7j6giAjgonbi/WQPti0kgG6fhcq30N3TaBlA7u+BL7xZs/jvgTKIHF9kD/DaH83PyMd/kdk8QiznN7G9gT3jb5te5K3ED5y94hx+yMHukcvH/qXr2t4LXYPjmb0C0l9gK9brBDuiWmK1T/jNjuxfpno91zMa/i+Bl8BMNxQbVt8knWoIjSNGXGd5QUdiHdB0MNPZZuzdKG1WqH8BbgHZR3CH4TQY5brwo8DBB2D2hj8KrDuGwxvAX5ppaFWvI2c7IBzeAprMZprki7PtdcU7HN4x78v0CWmruVmRiM/i8G4liKN41cwKBHBUCWI3s0QsHc4XQMPH206samZ2PNelV3W3vp1ZJpaOAPxu/Zj85VjFAHacXgF7oFurUUBfzCnnPfDP98BvdquEAmFymjgAAAAASUVORK5CYII="

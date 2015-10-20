@@ -1,1 +1,11 @@
 
+#web-results(ng-show='main.types.get("web")' ng-cloak)
+  md-content
+    md-card(ng-repeat='result in main.results.get("web")')
+      md-card-content
+        h3.md-title
+          a(href="{{ result.unescapedUrl }}" target='_blank' ng-bind-html='result.titleNoFormatting')
+        p(ng-bind-html='result.content')
+        p
+          a(href="{{ result.unescapedUrl }}" target='_blank') {{ result.unescapedUrl }}
+

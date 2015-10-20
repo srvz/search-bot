@@ -3,7 +3,7 @@
  */
 
 angular
-  .module('Bot', ['ngRoute', 'ngResource', 'ngAria', 'ngAnimate', 'ngMaterial'])
+  .module('Bot', ['ngRoute', 'ngResource', 'ngAria', 'ngAnimate', 'ngMaterial', 'ngSanitize'])
   .constant('host', 'http://127.0.0.1:5080')
   .run(runBlock);
 

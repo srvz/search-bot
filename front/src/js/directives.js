@@ -32,11 +32,10 @@ class SearchBox {
 
     function changePosition() {
 
-      console.log('changePosition', scope.data.position);
       if (scope.data.position === 'keep') return;
 
       const $document = DOCUMENT.get(SearchBox.instance);
-      const height = ($document[0].body.clientHeight - 38) * 0.5;
+      const height = ($document[0].body.clientHeight - 38) * 0.38;
       const searchbox = angular.element(elem.children()[0]);
 
       if (!scope.data.position || scope.data.position === 'middle') {

@@ -1,15 +1,115 @@
 
-body {
-  background-color: #f2f2f2;
+.background-color (@color: #f2f2f2) {
+  background-color: @color;
 }
 
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#container {
+  .background-color;
+  font-family: arial,sans-serif;
+  height: auto;
+  min-height: 100%;
+  margin-bottom: -50px;
+}
+
+header {
+  padding-bottom: 60px;
+}
+
+main {
+
+  .background-color;
+  padding-bottom: 50px;
+  md-content {
+
+    .background-color;
+
+    md-card {
+
+      margin-left: 0;
+      margin-right: 0;
+
+      md-card-content {
+        padding: 8px 16px;
+      }
+
+      h3 {
+
+        font-size: 18px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        a {
+          text-decoration: none;
+          color: #1a0dab;
+        }
+      }
+
+      p {
+
+        font-size: small;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        a {
+          text-decoration: none;
+          font-style: normal;
+          color: #006621;
+        }
+      }
+    }
+  }
+}
+
+#load-more {
+
+  md-card-content {
+    padding: 0;
+    div {
+      .md-button {
+        width: 100%;
+        margin: 0;
+      }
+      p {
+        font-style: normal;
+        text-align: center;
+        width: 100%;
+        margin: 10px;
+      }
+    }
+  }
+}
+
+
 footer {
-  position: absolute;
-  bottom: 10px;
+
+  height: 40px;
   width: 100%;
-  background-color: #f2f2f2;
+  .background-color;
 
   md-content {
-    background-color: #f2f2f2;
+    .background-color;;
+  }
+}
+
+@media screen {
+
+  @media (max-width: 799px) {
+
+    main {
+      margin-left: 8px;
+      margin-right: 8px;
+    }
+  }
+
+  @media (min-width: 800px) {
+    main {
+      margin-left: 25%;
+      margin-right: 25%;
+      width: 50%;
+    }
   }
 }

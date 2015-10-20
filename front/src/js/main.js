@@ -9,6 +9,7 @@ require('../less/search-box.less');
 import 'angular';
 import 'angular-route';
 import 'angular-resource';
+import 'angular-sanitize';
 import 'angular-aria';
 import 'angular-animate';
 import 'angular-material';
