@@ -1,6 +1,11 @@
 import logging
+import os
+
 
 def get_logger(name='routes', level=logging.DEBUG):
+
+    if os.environ.get('PRODUCTION'):
+        level = logging.CRITICAL
     format_tpl = (
         '%(asctime)s|%(levelname)s|'
         '%(name)s:%(module)s:%(funcName)s:%(lineno)s >>> %(message)s'
@@ -11,6 +16,7 @@ def get_logger(name='routes', level=logging.DEBUG):
     return logger
 
 log = get_logger()
+
 
 def parse_request_params(params):
     query = params.get('q', '')
@@ -26,7 +32,11 @@ def parse_request_params(params):
     if query.startswith('!'):
         index = query.find(' ')
         if index > -1:
-            args['type'] = query[1:index]
+            keyword = query[1:index]
+            if keyword in ['?']:
+                args['target'] = keyword
+            else:
+                args['type'] = keyword
             args['q'] = query[index + 1:]
 
     log.info('args = %s', args)

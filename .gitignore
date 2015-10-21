@@ -145,3 +145,5 @@ Temporary Items
 .apdisk
 front/node_modules/
 front/bower_components/
+
+static/js

@@ -7,6 +7,7 @@ import json
 
 log = get_logger()
 
+
 class SearchHandler(tornado.web.RequestHandler):
 
     @gen.coroutine

@@ -21,6 +21,10 @@ class SearchBox {
 
     elem.on('submit', function() {
 
+      if (!scope.data.input || scope.data.input.length === 0) {
+
+        return;
+      }
       if (scope.data.position !== 'keep' ) {
 
         scope.data.position = 'top';

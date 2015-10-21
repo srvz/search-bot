@@ -1,3 +1,4 @@
-flask
-requests
-tornado
+flask==0.10.1
+requests==2.8.0
+tornado==4.2.1
+jinja==2.8

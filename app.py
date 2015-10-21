@@ -5,6 +5,7 @@ import os
 from handlers.index import MainHandler
 from handlers.search import SearchHandler
 
+
 def main():
     settings = {
         'static_path': os.path.join(os.path.dirname(__file__), 'static'),
@@ -15,7 +16,7 @@ def main():
         (r'/api/search', SearchHandler)
     ], **settings)
     server = HTTPServer(app)
-    server.bind(5080)
+    server.bind(os.environ.get('PORT', 5080))
     server.start(0)
     IOLoop.current().start()
 

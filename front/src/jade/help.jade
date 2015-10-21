@@ -6,7 +6,7 @@ md-dialog(aria-label='help' ng-cloak)
         h2 帮助
         span.flex
         md-button.md-icon-button(ng-click='close()' style='float:right;')
-          md-icon(md-svg-icon='/static/js/{{ icon }}' aria-label='close')
+          md-icon(md-svg-icon='/static/assets/{{ icon }}' aria-label='close')
     md-dialog-content(style='max-width:800px;max-height:810px;')
       .md-content
         pre(ng-repeat='item in data') {{ item }}

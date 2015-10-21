@@ -4,6 +4,7 @@ from plugins.dispatcher import dispatch
 
 search = Blueprint('search', __name__, url_prefix='/api')
 
+
 @search.route('/search', methods=['GET', 'POST'])
 def api_search():
     if request.method in ['GET', 'POST']:

@@ -14,7 +14,6 @@ class MainController {
     this.$rootScope = $rootScope;
     this.$routeParams = $routeParams;
     this.services = services;
-    console.log('hello bot');
 
     this.params = new Map();
     this.results = new Map();
@@ -29,7 +28,6 @@ class MainController {
 
   handleEvent(event, args) {
 
-    console.log(event, args);
     this.parseInput(args);
   }
 
@@ -83,7 +81,6 @@ class MainController {
 
   search() {
 
-    console.log(this.params);
     this.showNoMore = false;
     this.showMoreCard = false;
     let req = new this.services.Request({
@@ -140,7 +137,7 @@ class MainController {
       .catch((err) => {
 
         console.log(err);
-        this.noMoreMessage = err.message;
+        this.noMoreMessage = 'Something goes wrong.';
         this.showTips(tipsTypeMessage);
       })
   }
@@ -236,9 +233,7 @@ class FooterController {
     }).then(function() {
 
     });
-
   }
-
 }
 
 
