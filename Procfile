@@ -1,1 +1,1 @@
-web:python app.py
+web:export PRODUCTION=1;python app.py

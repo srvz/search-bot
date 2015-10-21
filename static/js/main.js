@@ -58626,7 +58626,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 	
-	buf.push("<md-dialog aria-label=\"help\" ng-cloak=\"ng-cloak\"><form><md-toolbar><div class=\"md-toolbar-tools\"><h2>帮助</h2><span class=\"flex\"></span><md-button ng-click=\"close()\" style=\"float:right;\" class=\"md-icon-button\"><md-icon md-svg-icon=\"/static/assets/{{ icon }}\" aria-label=\"close\"></md-icon></md-button></div></md-toolbar><md-dialog-content style=\"max-width:800px;max-height:810px;\"><div class=\"md-content\"><pre ng-repeat=\"item in data\">{{ item }}</pre></div></md-dialog-content><div layout=\"row\" class=\"md-actions\"><md-button ng-click=\"close()\" aria-label=\"close\">Close</md-button></div></form></md-dialog>");;return buf.join("");
+	buf.push("<md-dialog aria-label=\"help\" ng-cloak=\"ng-cloak\"><form><md-toolbar><div class=\"md-toolbar-tools\"><h2>帮助</h2><span class=\"flex\"></span><md-button ng-click=\"close()\" style=\"float:right;\" class=\"md-icon-button\"><md-icon md-svg-icon=\"/static/assets/{{ icon }}\" aria-label=\"close\"></md-icon></md-button></div></md-toolbar><md-dialog-content style=\"max-width:800px;max-height:810px;\"><div class=\"md-content\"><p ng-repeat=\"item in data\">{{ item }}</p></div></md-dialog-content><div layout=\"row\" class=\"md-actions\"><md-button ng-click=\"close()\" aria-label=\"close\">Close</md-button></div></form></md-dialog>");;return buf.join("");
 	}
 
 /***/ },
@@ -59040,7 +59040,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 	
-	buf.push("<div id=\"searchbox\"><div id=\"sb-form-container\"><form action=\"\" method=\"post\" ng-submit=\"$event.preventDefault()\" class=\"sb-form\"><div class=\"sb-content-a\"><div class=\"sb-content-b\"><div class=\"sb-content-c\"><div class=\"sb-content-d\"><div class=\"sb-content-e\"><div class=\"sb-content-f\"><div class=\"sb-content-g\"><div class=\"sb-content-h\"><input type=\"search\" placeholder=\"{{ data.placeholder }}\" ng-model=\"data.input\" class=\"sb-content-input\"/></div></div></div></div><div class=\"sb-button-a\"><div class=\"sb-button-b\"><div class=\"sb-button-c\"><div class=\"sb-button-d\"><button type=\"submit\" ng-click=\"search()\" class=\"sb-button-btn\"><span class=\"sb-button-ico\"></span></button></div></div></div></div></div></div></div></div></form></div></div>");;return buf.join("");
+	buf.push("<div id=\"searchbox\"><div id=\"sb-form-container\"><form action=\"/\" method=\"get\" class=\"sb-form\"><div class=\"sb-content-a\"><div class=\"sb-content-b\"><div class=\"sb-content-c\"><div class=\"sb-content-d\"><div class=\"sb-content-e\"><div class=\"sb-content-f\"><div class=\"sb-content-g\"><div class=\"sb-content-h\"><input type=\"search\" name=\"q\" placeholder=\"{{ data.placeholder }}\" ng-model=\"data.input\" class=\"sb-content-input\"/></div></div></div></div><div class=\"sb-button-a\"><div class=\"sb-button-b\"><div class=\"sb-button-c\"><div class=\"sb-button-d\"><button type=\"submit\" class=\"sb-button-btn\"><span class=\"sb-button-ico\"></span></button></div></div></div></div></div></div></div></div></form></div></div>");;return buf.join("");
 	}
 
 /***/ },
@@ -59108,16 +59108,45 @@
 	
 	      changePosition();
 	
-	      elem.on('submit', function () {
+	      var form = angular.element(elem.find('form')[0]);
+	      //form.on('submit', function(e) {
+	      //
+	      //  form.blur();
+	      //  e.preventDefault();
+	      //  console.log('submit');
+	      //  if (!scope.data.input || scope.data.input.length === 0) {
+	      //
+	      //    return;
+	      //  }
+	      //  if (scope.data.position !== 'keep' ) {
+	      //
+	      //    scope.data.position = 'top';
+	      //    changePosition();
+	      //  }
+	      //});
 	
-	        if (!scope.data.input || scope.data.input.length === 0) {
+	      form.on('keyup', function (e) {
 	
-	          return;
-	        }
-	        if (scope.data.position !== 'keep') {
+	        console.log(e);
 	
-	          scope.data.position = 'top';
-	          changePosition();
+	        if (e && e.which === 13) {
+	
+	          //form.submit();
+	          var f = document.getElementsByTagName('form')[0];
+	          f.submit();
+	          //elem.blur();
+	          //
+	          //if (!scope.data.input || scope.data.input.length === 0) {
+	          //
+	          //  return;
+	          //}
+	          //if (scope.data.position !== 'keep' ) {
+	          //
+	          //  scope.data.position = 'top';
+	          //  changePosition();
+	          //}
+	          //
+	          //scope.search();
 	        }
 	      });
 	
@@ -59132,7 +59161,10 @@
 	
 	      function changePosition() {
 	
-	        if (scope.data.position === 'keep') return;
+	        if (scope.data.position === 'keep') {
+	
+	          return;
+	        }
 	
 	        var $document = DOCUMENT.get(SearchBox.instance);
 	        var height = ($document[0].body.clientHeight - 38) * 0.38;
@@ -59198,7 +59230,7 @@
 	
 	
 	// module
-	exports.push([module.id, "body {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n#container {\n  background-color: #f2f2f2;\n  font-family: arial, sans-serif;\n  height: auto;\n  min-height: 100%;\n  margin-bottom: -50px;\n}\nheader {\n  padding-bottom: 60px;\n}\nmain {\n  background-color: #f2f2f2;\n  padding-bottom: 50px;\n}\nmain md-content {\n  background-color: #f2f2f2;\n}\nmain md-content md-card {\n  margin-left: 0;\n  margin-right: 0;\n}\nmain md-content md-card md-card-content {\n  padding: 8px 16px;\n}\nmain md-content md-card h3 {\n  font-size: 18px;\n  margin-bottom: 5px;\n  margin-top: 5px;\n}\nmain md-content md-card h3 a {\n  text-decoration: none;\n  color: #1a0dab;\n}\nmain md-content md-card p {\n  font-size: small;\n  margin-top: 5px;\n  margin-bottom: 5px;\n}\nmain md-content md-card p a {\n  text-decoration: none;\n  font-style: normal;\n  color: #006621;\n}\n#load-more md-card-content {\n  padding: 0;\n}\n#load-more md-card-content div .md-button {\n  width: 100%;\n  margin: 0;\n}\n#load-more md-card-content div p {\n  font-style: normal;\n  text-align: center;\n  width: 100%;\n  margin: 10px;\n}\nfooter {\n  height: 40px;\n  width: 100%;\n  background-color: #f2f2f2;\n}\nfooter md-content {\n  background-color: #f2f2f2;\n}\n@media screen and (max-width: 799px) {\n  main {\n    margin-left: 8px;\n    margin-right: 8px;\n  }\n}\n@media screen and (min-width: 800px) {\n  main {\n    margin-left: 25%;\n    margin-right: 25%;\n    width: 50%;\n  }\n}\n", ""]);
+	exports.push([module.id, "body {\n  height: 100%;\n  margin: 0;\n  padding: 0;\n}\n#container {\n  background-color: #f2f2f2;\n  font-family: arial, sans-serif;\n  height: auto;\n  min-height: 100%;\n  margin-bottom: -50px;\n}\nheader {\n  min-height: 50px;\n}\nmain {\n  background-color: #f2f2f2;\n  padding-bottom: 50px;\n}\nmain md-content {\n  background-color: #f2f2f2;\n}\nmain md-content md-card {\n  margin-left: 0;\n  margin-right: 0;\n}\nmain md-content md-card md-card-content {\n  padding: 8px 16px;\n}\nmain md-content md-card h3 {\n  font-size: 18px;\n  margin-bottom: 5px;\n  margin-top: 5px;\n}\nmain md-content md-card h3 a {\n  text-decoration: none;\n  color: #1a0dab;\n}\nmain md-content md-card p {\n  font-size: small;\n  margin-top: 5px;\n  margin-bottom: 5px;\n  word-wrap: break-word;\n}\nmain md-content md-card p a {\n  text-decoration: none;\n  font-style: normal;\n  color: #006621;\n}\n#load-more md-card-content {\n  padding: 0;\n}\n#load-more md-card-content div .md-button {\n  width: 100%;\n  margin: 0;\n}\n#load-more md-card-content div p {\n  font-style: normal;\n  text-align: center;\n  width: 100%;\n  margin: 10px;\n}\nfooter {\n  height: 40px;\n  width: 100%;\n  background-color: #f2f2f2;\n}\nfooter md-content {\n  background-color: #f2f2f2;\n}\n@media screen and (max-width: 799px) {\n  main {\n    margin-left: 8px;\n    margin-right: 8px;\n  }\n  main md-content {\n    overflow: hidden;\n  }\n  main md-content h3 {\n    font-size: 16px;\n  }\n}\n@media screen and (min-width: 800px) {\n  main {\n    margin-left: 25%;\n    margin-right: 25%;\n    width: 50%;\n  }\n}\n", ""]);
 	
 	// exports
 
@@ -59238,7 +59270,7 @@
 	
 	
 	// module
-	exports.push([module.id, "#searchbox {\n  display: block;\n}\n#sb-form-container {\n  background-color: #fff;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  border-radius: 2px;\n}\n.sb-form {\n  width: 100%;\n  display: block;\n  background: none;\n}\n.sb-content-a {\n  position: relative;\n  display: block;\n}\n.sb-content-b {\n  display: block;\n  box-sizing: border-box;\n}\n.sb-content-c {\n  text-align: left;\n  position: relative;\n  display: block;\n}\n.sb-content-d {\n  line-height: 0;\n  overflow: visible;\n  white-space: nowrap;\n}\n.sb-content-e {\n  display: inline-block;\n  width: 100%;\n  height: 38px;\n  vertical-align: top;\n}\n.sb-content-f {\n  height: 38px;\n  vertical-align: top;\n  background: white;\n  box-sizing: border-box;\n  display: block;\n}\n.sb-content-g {\n  box-sizing: border-box;\n  height: 100%;\n  overflow: hidden;\n  padding: 6px 9px 0;\n  display: block;\n}\n.sb-content-h {\n  position: relative;\n  display: block;\n}\n.sb-content-input {\n  border: none;\n  padding: 0;\n  margin: 0;\n  width: 100%;\n  position: absolute;\n  z-index: 6;\n  left: 0;\n  outline: none;\n  background: url(data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw%3D%3D) transparent;\n  font: 16px arial, sans-serif;\n  line-height: 26px !important;\n  height: 26px !important;\n  box-sizing: border-box;\n}\n.sb-button-a {\n  display: inline-block;\n  vertical-align: top;\n  width: 38px;\n}\n.sb-button-b {\n  display: block;\n}\n.sb-button-c {\n  border: 0;\n  display: block;\n}\n.sb-button-d {\n  border-radius: 0 2px 2px 0;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  height: 38px;\n  width: 38px;\n  min-width: 38px !important;\n  margin: 0;\n  padding: 0;\n  border: none;\n  background: #4285f4 none;\n  text-align: center;\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n}\n.sb-button-d:hover {\n  background: #1266f1 none;\n}\n.sb-button-btn {\n  background: transparent;\n  border: 0;\n  font-size: 0;\n  height: 30px;\n  outline: 0;\n  width: 100%;\n  cursor: default;\n}\n.sb-button-ico {\n  color: transparent;\n  display: inline-block;\n  height: 24px;\n  width: 24px;\n  background-image: url(" + __webpack_require__(41) + ");\n  background-size: 24px 24px;\n  margin: 7px auto;\n  cursor: default;\n}\n@media screen and (max-width: 799px) {\n  #searchbox {\n    margin-left: 8px;\n    margin-right: 8px;\n    position: relative;\n    min-height: 400px;\n  }\n  .sb-content-d {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n  }\n}\n@media screen and (min-width: 800px) {\n  #searchbox {\n    margin-left: 25%;\n    margin-right: 25%;\n    width: 50%;\n    position: absolute;\n  }\n  .sb-content-d {\n    display: block;\n  }\n  .sb-content-f {\n    padding-right: 38px;\n  }\n}\n", ""]);
+	exports.push([module.id, "#searchbox {\n  display: block;\n}\n#sb-form-container {\n  background-color: #fff;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  border-radius: 2px;\n}\n.sb-form {\n  width: 100%;\n  display: block;\n  background: none;\n}\n.sb-content-a {\n  position: relative;\n  display: block;\n}\n.sb-content-b {\n  display: block;\n  box-sizing: border-box;\n}\n.sb-content-c {\n  text-align: left;\n  position: relative;\n  display: block;\n}\n.sb-content-d {\n  line-height: 0;\n  overflow: visible;\n  white-space: nowrap;\n}\n.sb-content-e {\n  display: inline-block;\n  width: 100%;\n  height: 38px;\n  vertical-align: top;\n}\n.sb-content-f {\n  height: 38px;\n  vertical-align: top;\n  background: white;\n  box-sizing: border-box;\n  display: block;\n}\n.sb-content-g {\n  box-sizing: border-box;\n  height: 100%;\n  overflow: hidden;\n  padding: 6px 9px 0;\n  display: block;\n}\n.sb-content-h {\n  position: relative;\n  display: block;\n}\n.sb-content-input {\n  border: none;\n  padding: 0;\n  margin: 0;\n  width: 100%;\n  position: absolute;\n  z-index: 6;\n  left: 0;\n  outline: none;\n  background: url(data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw%3D%3D) transparent;\n  font: 16px arial, sans-serif;\n  line-height: 26px !important;\n  height: 26px !important;\n  box-sizing: border-box;\n}\n.sb-button-a {\n  display: inline-block;\n  vertical-align: top;\n  width: 38px;\n}\n.sb-button-b {\n  display: block;\n}\n.sb-button-c {\n  border: 0;\n  display: block;\n}\n.sb-button-d {\n  border-radius: 0 2px 2px 0;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  height: 38px;\n  width: 38px;\n  min-width: 38px !important;\n  margin: 0;\n  padding: 0;\n  border: none;\n  background: #4285f4 none;\n  text-align: center;\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n}\n.sb-button-d:hover {\n  background: #1266f1 none;\n}\n.sb-button-btn {\n  background: transparent;\n  border: 0;\n  font-size: 0;\n  height: 30px;\n  outline: 0;\n  width: 100%;\n  cursor: default;\n}\n.sb-button-ico {\n  color: transparent;\n  display: inline-block;\n  height: 24px;\n  width: 24px;\n  background-image: url(" + __webpack_require__(41) + ");\n  background-size: 24px 24px;\n  margin: 7px auto;\n  cursor: default;\n}\n@media screen and (max-width: 799px) {\n  #searchbox {\n    margin-left: 8px;\n    margin-right: 8px;\n    position: relative;\n  }\n  .sb-content-d {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n  }\n}\n@media screen and (min-width: 800px) {\n  #searchbox {\n    margin-left: 25%;\n    margin-right: 25%;\n    width: 50%;\n    position: absolute;\n  }\n  .sb-content-d {\n    display: block;\n  }\n  .sb-content-f {\n    padding-right: 38px;\n  }\n}\n", ""]);
 	
 	// exports
 
