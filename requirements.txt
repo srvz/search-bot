@@ -1,4 +1,4 @@
 flask==0.10.1
-requests==2.8.0
+requests==2.7.0
 tornado==4.2.1
 jinja2==2.8
