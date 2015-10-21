@@ -6,15 +6,17 @@ from handlers.index import MainHandler
 from handlers.search import SearchHandler
 
 
+settings = {
+    'static_path': os.path.join(os.path.dirname(__file__), 'static'),
+    'name': __name__,
+}
+app = Application([
+    (r'/', MainHandler),
+    (r'/api/search', SearchHandler)
+], **settings)
+
+
 def main():
-    settings = {
-        'static_path': os.path.join(os.path.dirname(__file__), 'static'),
-        'name': __name__,
-    }
-    app = Application([
-        (r'/', MainHandler),
-        (r'/api/search', SearchHandler)
-    ], **settings)
     server = HTTPServer(app)
     server.bind(os.environ.get('PORT', 5080))
     server.start(0)
