@@ -69,17 +69,17 @@
 	
 	__webpack_require__(21);
 	
+	__webpack_require__(26);
+	
 	__webpack_require__(27);
 	
-	__webpack_require__(28);
+	__webpack_require__(35);
 	
 	__webpack_require__(36);
 	
-	__webpack_require__(37);
-	
 	__webpack_require__(16);
-	__webpack_require__(38);
-	__webpack_require__(40);
+	__webpack_require__(37);
+	__webpack_require__(39);
 
 /***/ },
 /* 1 */,
@@ -58336,7 +58336,7 @@
 	
 	'use strict';
 	
-	angular.module('Bot', ['ngRoute', 'ngResource', 'ngAria', 'ngAnimate', 'ngMaterial', 'ngSanitize']).constant('host', 'http://127.0.0.1:5080').run(runBlock);
+	angular.module('Bot', ['ngRoute', 'ngResource', 'ngAria', 'ngAnimate', 'ngMaterial', 'ngSanitize']).constant('host', window.location.origin).run(runBlock);
 	
 	runBlock.$inject = ['servicesConfigure'];
 	function runBlock(servicesConfigure) {
@@ -58370,7 +58370,6 @@
 	  function MainController($rootScope, $scope, $routeParams, services) {
 	    _classCallCheck(this, MainController);
 	
-	    __webpack_require__(22);
 	    this.$rootScope = $rootScope;
 	    this.$routeParams = $routeParams;
 	    this.services = services;
@@ -58585,8 +58584,8 @@
 	    key: 'help',
 	    value: function help(event) {
 	
-	      var html = __webpack_require__(23)();
-	      var icon = __webpack_require__(26);
+	      var html = __webpack_require__(22)();
+	      var icon = __webpack_require__(25);
 	      this.$mdDialog.show({
 	        controller: function controller($scope, $mdDialog, data, icon) {
 	          $scope.icon = icon;
@@ -58610,19 +58609,17 @@
 	  return FooterController;
 	})();
 	
+	MainController.$inject = ['$rootScope', '$scope', '$routeParams', 'services'];
+	HeaderController.$inject = ['$rootScope', '$scope', '$routeParams'];
+	FooterController.$inject = ['$scope', '$mdDialog'];
+	
 	angular.module('Bot').controller('MainController', MainController).controller('HeaderController', HeaderController).controller('FooterController', FooterController);
 
 /***/ },
 /* 22 */
-/***/ function(module, exports) {
-
-	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAuBJREFUaAXtmM1qFEEUhdOC2QhZxIVBRMZFss0uCPoASRYivkB8i+QVkkUgj6A7t+6FCMGtuJwRBEWy8Q9FF8bF+J1JX7m0NcN0d90wrXPhTE1VdZ1zb3X9dS0szG3eA/93DxRtwh8Oh2u0F66Dq+ATOAWDoigGpLNnON0DB6APJpnq90FvJqLAkWVwCH6COqbn1W45IpCphhDi64g/BTcrTnwjfwLeAw0fDaMb4C5YAt7ekbnH0HrlC8P/4/w2+A68HZPZBIspB1Re1j8n9Sae7VSbkDLE1oF3/jP5+3XE9DxQOzPx6Y3GGiIa829NlfQ1WG2iqnZle5KRiTdkTvzxDwFNPDP1YCPnjVDtgX8Th1aXPUVIS6VfbWoNm3EOwanhZCb+3rhnW5VDrHXe7LgVWaUxpH5iH1Sq82QR6Zv3pJt5WM9ZxOe4+zm5R1yQrzmBr/xPLpVNhcUHxGumo0hju5Ro6QlP2HjOEs80Lir5tPmZeT0rmzpNBaCDmZl22AjzvF6vtlYqAB0HzHQ8iDDP6/Vqa6UCyEY+wRvvtNeb0CRdlQrg1D2qg1mEeV6v116LpaFTq1AyYoLo7j6giAjgonbi/WQPti0kgG6fhcq30N3TaBlA7u+BL7xZs/jvgTKIHF9kD/DaH83PyMd/kdk8QiznN7G9gT3jb5te5K3ED5y94hx+yMHukcvH/qXr2t4LXYPjmb0C0l9gK9brBDuiWmK1T/jNjuxfpno91zMa/i+Bl8BMNxQbVt8knWoIjSNGXGd5QUdiHdB0MNPZZuzdKG1WqH8BbgHZR3CH4TQY5brwo8DBB2D2hj8KrDuGwxvAX5ppaFWvI2c7IBzeAprMZprki7PtdcU7HN4x78v0CWmruVmRiM/i8G4liKN41cwKBHBUCWI3s0QsHc4XQMPH206samZ2PNelV3W3vp1ZJpaOAPxu/Zj85VjFAHacXgF7oFurUUBfzCnnPfDP98BvdquEAmFymjgAAAAASUVORK5CYII="
-
-/***/ },
-/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(24);
+	var jade = __webpack_require__(23);
 	
 	module.exports = function template(locals) {
 	var buf = [];
@@ -58633,7 +58630,7 @@
 	}
 
 /***/ },
-/* 24 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58853,7 +58850,7 @@
 	    throw err;
 	  }
 	  try {
-	    str = str || __webpack_require__(25).readFileSync(filename, 'utf8')
+	    str = str || __webpack_require__(24).readFileSync(filename, 'utf8')
 	  } catch (ex) {
 	    rethrow(err, null, lineno)
 	  }
@@ -58885,19 +58882,19 @@
 
 
 /***/ },
-/* 25 */
+/* 24 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 26 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "../assets/bd5cf76224f94d28e22ef19ce3115210.svg"
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -58907,7 +58904,7 @@
 	 */
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -58919,7 +58916,7 @@
 	
 	  function templateWithName(name) {
 	
-	    return __webpack_require__(29)("./" + name + '.jade');
+	    return __webpack_require__(28)("./" + name + '.jade');
 	  }
 	
 	  var main = {
@@ -58936,17 +58933,17 @@
 	}
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./help.jade": 23,
-		"./main.jade": 30,
-		"./partial_images.jade": 32,
-		"./partial_news.jade": 33,
-		"./partial_video.jade": 34,
-		"./partial_web.jade": 31,
-		"./searchbox.jade": 35
+		"./help.jade": 22,
+		"./main.jade": 29,
+		"./partial_images.jade": 31,
+		"./partial_news.jade": 32,
+		"./partial_video.jade": 33,
+		"./partial_web.jade": 30,
+		"./searchbox.jade": 34
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -58959,28 +58956,28 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 29;
+	webpackContext.id = 28;
 
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(24);
+	var jade = __webpack_require__(23);
 	
 	module.exports = function template(locals) {
 	var buf = [];
 	var jade_mixins = {};
 	var jade_interp;
 	;var locals_for_with = (locals || {});(function (undefined) {
-	buf.push("<div id=\"container\"><header ng-controller=\"HeaderController as header\" ng-cloak=\"ng-cloak\"><searchbox sb-data=\"header.data\" sb-search=\"header.search()\"></searchbox></header><main><div id=\"search-results\">" + (null == (jade_interp = __webpack_require__(31).call(this, locals)) ? "" : jade_interp) + "<div id=\"load-more\" ng-show=\"main.showMoreCard\"><md-content><md-card><md-card-content><div layout=\"row\" layout-align=\"space-around center\"><md-button ng-click=\"main.goNext()\" ng-show=\"main.showMoreButton\" class=\"md-primary\">more...</md-button><p ng-show=\"main.showNoMore\">{{ main.noMoreMessage }}</p></div></md-card-content></md-card></md-content></div><div id=\"progress-circular\" ng-show=\"main.progressMode\"><div layout=\"row\" layout-align=\"space-around center\"><md-progress-circular md-mode=\"{{ main.progressMode }}\" md-diameter=\"30px\" class=\"md-hue-2\"></md-progress-circular></div></div></div></main></div><footer ng-controller=\"FooterController as footer\" ng-cloak=\"ng-cloak\"><div class=\"help-notes\"><md-content layout=\"row\" layout-align=\"center center\"><md-button ng-click=\"footer.help($event)\" class=\"md-primary\">help</md-button></md-content></div></footer>");}.call(this,"undefined" in locals_for_with?locals_for_with.undefined: false?undefined:undefined));;return buf.join("");
+	buf.push("<div id=\"container\"><header ng-controller=\"HeaderController as header\" ng-cloak=\"ng-cloak\"><searchbox sb-data=\"header.data\" sb-search=\"header.search()\"></searchbox></header><main><div id=\"search-results\">" + (null == (jade_interp = __webpack_require__(30).call(this, locals)) ? "" : jade_interp) + "<div id=\"load-more\" ng-show=\"main.showMoreCard\"><md-content><md-card><md-card-content><div layout=\"row\" layout-align=\"space-around center\"><md-button ng-click=\"main.goNext()\" ng-show=\"main.showMoreButton\" class=\"md-primary\">more...</md-button><p ng-show=\"main.showNoMore\">{{ main.noMoreMessage }}</p></div></md-card-content></md-card></md-content></div><div id=\"progress-circular\" ng-show=\"main.progressMode\"><div layout=\"row\" layout-align=\"space-around center\"><md-progress-circular md-mode=\"{{ main.progressMode }}\" md-diameter=\"30px\" class=\"md-hue-2\"></md-progress-circular></div></div></div></main></div><footer ng-controller=\"FooterController as footer\" ng-cloak=\"ng-cloak\"><div class=\"help-notes\"><md-content layout=\"row\" layout-align=\"center center\"><md-button ng-click=\"footer.help($event)\" class=\"md-primary\">help</md-button></md-content></div></footer>");}.call(this,"undefined" in locals_for_with?locals_for_with.undefined: false?undefined:undefined));;return buf.join("");
 	}
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(24);
+	var jade = __webpack_require__(23);
 	
 	module.exports = function template(locals) {
 	var buf = [];
@@ -58991,10 +58988,24 @@
 	}
 
 /***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var jade = __webpack_require__(23);
+	
+	module.exports = function template(locals) {
+	var buf = [];
+	var jade_mixins = {};
+	var jade_interp;
+	
+	;return buf.join("");
+	}
+
+/***/ },
 /* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(24);
+	var jade = __webpack_require__(23);
 	
 	module.exports = function template(locals) {
 	var buf = [];
@@ -59008,7 +59019,7 @@
 /* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(24);
+	var jade = __webpack_require__(23);
 	
 	module.exports = function template(locals) {
 	var buf = [];
@@ -59022,21 +59033,7 @@
 /* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var jade = __webpack_require__(24);
-	
-	module.exports = function template(locals) {
-	var buf = [];
-	var jade_mixins = {};
-	var jade_interp;
-	
-	;return buf.join("");
-	}
-
-/***/ },
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var jade = __webpack_require__(24);
+	var jade = __webpack_require__(23);
 	
 	module.exports = function template(locals) {
 	var buf = [];
@@ -59047,7 +59044,7 @@
 	}
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports) {
 
 	/**
@@ -59077,7 +59074,7 @@
 	angular.module('Bot').constant('services', {}).factory('Request', Request).factory('servicesConfigure', servicesConfigure);
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -59101,7 +59098,7 @@
 	      data: '=sbData',
 	      search: '&sbSearch'
 	    };
-	    this.template = __webpack_require__(35);
+	    this.template = __webpack_require__(34);
 	    DOCUMENT.set(this, $document);
 	  }
 	
@@ -59167,13 +59164,13 @@
 	angular.module('Bot').directive('searchbox', SearchBox.directiveFactory);
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(39);
+	var content = __webpack_require__(38);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(19)(content, {});
@@ -59193,7 +59190,7 @@
 	}
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(18)();
@@ -59207,13 +59204,13 @@
 
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(41);
+	var content = __webpack_require__(40);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(19)(content, {});
@@ -59233,7 +59230,7 @@
 	}
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(18)();
@@ -59241,10 +59238,16 @@
 	
 	
 	// module
-	exports.push([module.id, "#searchbox {\n  display: block;\n}\n#sb-form-container {\n  background-color: #fff;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  border-radius: 2px;\n}\n.sb-form {\n  width: 100%;\n  display: block;\n  background: none;\n}\n.sb-content-a {\n  position: relative;\n  display: block;\n}\n.sb-content-b {\n  display: block;\n  box-sizing: border-box;\n}\n.sb-content-c {\n  text-align: left;\n  position: relative;\n  display: block;\n}\n.sb-content-d {\n  line-height: 0;\n  overflow: visible;\n  white-space: nowrap;\n}\n.sb-content-e {\n  display: inline-block;\n  width: 100%;\n  height: 38px;\n  vertical-align: top;\n}\n.sb-content-f {\n  height: 38px;\n  vertical-align: top;\n  background: white;\n  box-sizing: border-box;\n  display: block;\n}\n.sb-content-g {\n  box-sizing: border-box;\n  height: 100%;\n  overflow: hidden;\n  padding: 6px 9px 0;\n  display: block;\n}\n.sb-content-h {\n  position: relative;\n  display: block;\n}\n.sb-content-input {\n  border: none;\n  padding: 0;\n  margin: 0;\n  width: 100%;\n  position: absolute;\n  z-index: 6;\n  left: 0;\n  outline: none;\n  background: url(data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw%3D%3D) transparent;\n  font: 16px arial, sans-serif;\n  line-height: 26px !important;\n  height: 26px !important;\n  box-sizing: border-box;\n}\n.sb-button-a {\n  display: inline-block;\n  vertical-align: top;\n  width: 38px;\n}\n.sb-button-b {\n  display: block;\n}\n.sb-button-c {\n  border: 0;\n  display: block;\n}\n.sb-button-d {\n  border-radius: 0 2px 2px 0;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  height: 38px;\n  width: 38px;\n  min-width: 38px !important;\n  margin: 0;\n  padding: 0;\n  border: none;\n  background: #4285f4 none;\n  text-align: center;\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n}\n.sb-button-d:hover {\n  background: #1266f1 none;\n}\n.sb-button-btn {\n  background: transparent;\n  border: 0;\n  font-size: 0;\n  height: 30px;\n  outline: 0;\n  width: 100%;\n  cursor: default;\n}\n.sb-button-ico {\n  color: transparent;\n  display: inline-block;\n  height: 24px;\n  width: 24px;\n  background-image: url(" + __webpack_require__(22) + ");\n  background-size: 24px 24px;\n  margin: 7px auto;\n  cursor: default;\n}\n@media screen and (max-width: 799px) {\n  #searchbox {\n    margin-left: 8px;\n    margin-right: 8px;\n    position: relative;\n    min-height: 400px;\n  }\n  .sb-content-d {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n  }\n}\n@media screen and (min-width: 800px) {\n  #searchbox {\n    margin-left: 25%;\n    margin-right: 25%;\n    width: 50%;\n    position: absolute;\n  }\n  .sb-content-d {\n    display: block;\n  }\n  .sb-content-f {\n    padding-right: 38px;\n  }\n}\n", ""]);
+	exports.push([module.id, "#searchbox {\n  display: block;\n}\n#sb-form-container {\n  background-color: #fff;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  border-radius: 2px;\n}\n.sb-form {\n  width: 100%;\n  display: block;\n  background: none;\n}\n.sb-content-a {\n  position: relative;\n  display: block;\n}\n.sb-content-b {\n  display: block;\n  box-sizing: border-box;\n}\n.sb-content-c {\n  text-align: left;\n  position: relative;\n  display: block;\n}\n.sb-content-d {\n  line-height: 0;\n  overflow: visible;\n  white-space: nowrap;\n}\n.sb-content-e {\n  display: inline-block;\n  width: 100%;\n  height: 38px;\n  vertical-align: top;\n}\n.sb-content-f {\n  height: 38px;\n  vertical-align: top;\n  background: white;\n  box-sizing: border-box;\n  display: block;\n}\n.sb-content-g {\n  box-sizing: border-box;\n  height: 100%;\n  overflow: hidden;\n  padding: 6px 9px 0;\n  display: block;\n}\n.sb-content-h {\n  position: relative;\n  display: block;\n}\n.sb-content-input {\n  border: none;\n  padding: 0;\n  margin: 0;\n  width: 100%;\n  position: absolute;\n  z-index: 6;\n  left: 0;\n  outline: none;\n  background: url(data:image/gif;base64,R0lGODlhAQABAID/AMDAwAAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw%3D%3D) transparent;\n  font: 16px arial, sans-serif;\n  line-height: 26px !important;\n  height: 26px !important;\n  box-sizing: border-box;\n}\n.sb-button-a {\n  display: inline-block;\n  vertical-align: top;\n  width: 38px;\n}\n.sb-button-b {\n  display: block;\n}\n.sb-button-c {\n  border: 0;\n  display: block;\n}\n.sb-button-d {\n  border-radius: 0 2px 2px 0;\n  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);\n  height: 38px;\n  width: 38px;\n  min-width: 38px !important;\n  margin: 0;\n  padding: 0;\n  border: none;\n  background: #4285f4 none;\n  text-align: center;\n  display: block;\n  position: absolute;\n  top: 0;\n  right: 0;\n}\n.sb-button-d:hover {\n  background: #1266f1 none;\n}\n.sb-button-btn {\n  background: transparent;\n  border: 0;\n  font-size: 0;\n  height: 30px;\n  outline: 0;\n  width: 100%;\n  cursor: default;\n}\n.sb-button-ico {\n  color: transparent;\n  display: inline-block;\n  height: 24px;\n  width: 24px;\n  background-image: url(" + __webpack_require__(41) + ");\n  background-size: 24px 24px;\n  margin: 7px auto;\n  cursor: default;\n}\n@media screen and (max-width: 799px) {\n  #searchbox {\n    margin-left: 8px;\n    margin-right: 8px;\n    position: relative;\n    min-height: 400px;\n  }\n  .sb-content-d {\n    display: -webkit-box;\n    display: -webkit-flex;\n    display: -ms-flexbox;\n    display: flex;\n  }\n}\n@media screen and (min-width: 800px) {\n  #searchbox {\n    margin-left: 25%;\n    margin-right: 25%;\n    width: 50%;\n    position: absolute;\n  }\n  .sb-content-d {\n    display: block;\n  }\n  .sb-content-f {\n    padding-right: 38px;\n  }\n}\n", ""]);
 	
 	// exports
 
+
+/***/ },
+/* 41 */
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAuBJREFUaAXtmM1qFEEUhdOC2QhZxIVBRMZFss0uCPoASRYivkB8i+QVkkUgj6A7t+6FCMGtuJwRBEWy8Q9FF8bF+J1JX7m0NcN0d90wrXPhTE1VdZ1zb3X9dS0szG3eA/93DxRtwh8Oh2u0F66Dq+ATOAWDoigGpLNnON0DB6APJpnq90FvJqLAkWVwCH6COqbn1W45IpCphhDi64g/BTcrTnwjfwLeAw0fDaMb4C5YAt7ekbnH0HrlC8P/4/w2+A68HZPZBIspB1Re1j8n9Sae7VSbkDLE1oF3/jP5+3XE9DxQOzPx6Y3GGiIa829NlfQ1WG2iqnZle5KRiTdkTvzxDwFNPDP1YCPnjVDtgX8Th1aXPUVIS6VfbWoNm3EOwanhZCb+3rhnW5VDrHXe7LgVWaUxpH5iH1Sq82QR6Zv3pJt5WM9ZxOe4+zm5R1yQrzmBr/xPLpVNhcUHxGumo0hju5Ro6QlP2HjOEs80Lir5tPmZeT0rmzpNBaCDmZl22AjzvF6vtlYqAB0HzHQ8iDDP6/Vqa6UCyEY+wRvvtNeb0CRdlQrg1D2qg1mEeV6v116LpaFTq1AyYoLo7j6giAjgonbi/WQPti0kgG6fhcq30N3TaBlA7u+BL7xZs/jvgTKIHF9kD/DaH83PyMd/kdk8QiznN7G9gT3jb5te5K3ED5y94hx+yMHukcvH/qXr2t4LXYPjmb0C0l9gK9brBDuiWmK1T/jNjuxfpno91zMa/i+Bl8BMNxQbVt8knWoIjSNGXGd5QUdiHdB0MNPZZuzdKG1WqH8BbgHZR3CH4TQY5brwo8DBB2D2hj8KrDuGwxvAX5ppaFWvI2c7IBzeAprMZprki7PtdcU7HN4x78v0CWmruVmRiM/i8G4liKN41cwKBHBUCWI3s0QsHc4XQMPH206samZ2PNelV3W3vp1ZJpaOAPxu/Zj85VjFAHacXgF7oFurUUBfzCnnPfDP98BvdquEAmFymjgAAAAASUVORK5CYII="
 
 /***/ }
 /******/ ]);
