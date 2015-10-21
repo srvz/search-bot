@@ -6,7 +6,7 @@ env = Environment(loader=PackageLoader('handlers', '../templates'))
 js_path = '/static/js/main.js'
 if os.environ.get('PRODUCTION'):
     js_path = '/static/dist/main.min.js'
-    # js_path = 'http://7xnocn.com1.z0.glb.clouddn.com/main.min.js'
+    js_path = 'http://7xnocn.com1.z0.glb.clouddn.com/main.min.js'
 index_tpl = env.get_template('index.html').render(js_path=js_path)
 
 
