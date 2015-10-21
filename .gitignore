@@ -146,5 +146,5 @@ Temporary Items
 front/node_modules/
 front/bower_components/
 
-static/js
+!static/js
 !static/dist
