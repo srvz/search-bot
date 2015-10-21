@@ -58396,7 +58396,6 @@
 	    value: function parseRouteParams() {
 	
 	      var params = this.$routeParams;
-	      console.log(params);
 	      var q = params.q;
 	
 	      if (q) {
@@ -58626,7 +58625,7 @@
 	var jade_mixins = {};
 	var jade_interp;
 	
-	buf.push("<md-dialog aria-label=\"help\" ng-cloak=\"ng-cloak\"><form><md-toolbar><div class=\"md-toolbar-tools\"><h2>帮助</h2><span class=\"flex\"></span><md-button ng-click=\"close()\" style=\"float:right;\" class=\"md-icon-button\"><md-icon md-svg-icon=\"/static/assets/{{ icon }}\" aria-label=\"close\"></md-icon></md-button></div></md-toolbar><md-dialog-content style=\"max-width:800px;max-height:810px;\"><div class=\"md-content\"><p ng-repeat=\"item in data\">{{ item }}</p></div></md-dialog-content><div layout=\"row\" class=\"md-actions\"><md-button ng-click=\"close()\" aria-label=\"close\">Close</md-button></div></form></md-dialog>");;return buf.join("");
+	buf.push("<md-dialog aria-label=\"help\" ng-cloak=\"ng-cloak\"><form><md-toolbar><div class=\"md-toolbar-tools\"><h2>帮助</h2><span class=\"flex\"></span><md-button ng-click=\"close()\" style=\"float:right;\" class=\"md-icon-button\"><md-icon md-svg-icon=\"/static/assets/{{ icon }}\" aria-label=\"close\"></md-icon></md-button></div></md-toolbar><md-dialog-content style=\"max-width:800px;max-height:810px;\"><div class=\"md-content\"><pre ng-repeat=\"item in data\">{{ item }}</pre></div></md-dialog-content><div layout=\"row\" class=\"md-actions\"><md-button ng-click=\"close()\" aria-label=\"close\">Close</md-button></div></form></md-dialog>");;return buf.join("");
 	}
 
 /***/ },
@@ -59109,44 +59108,12 @@
 	      changePosition();
 	
 	      var form = angular.element(elem.find('form')[0]);
-	      //form.on('submit', function(e) {
-	      //
-	      //  form.blur();
-	      //  e.preventDefault();
-	      //  console.log('submit');
-	      //  if (!scope.data.input || scope.data.input.length === 0) {
-	      //
-	      //    return;
-	      //  }
-	      //  if (scope.data.position !== 'keep' ) {
-	      //
-	      //    scope.data.position = 'top';
-	      //    changePosition();
-	      //  }
-	      //});
 	
 	      form.on('keyup', function (e) {
 	
-	        console.log(e);
-	
 	        if (e && e.which === 13) {
 	
-	          //form.submit();
-	          var f = document.getElementsByTagName('form')[0];
-	          f.submit();
-	          //elem.blur();
-	          //
-	          //if (!scope.data.input || scope.data.input.length === 0) {
-	          //
-	          //  return;
-	          //}
-	          //if (scope.data.position !== 'keep' ) {
-	          //
-	          //  scope.data.position = 'top';
-	          //  changePosition();
-	          //}
-	          //
-	          //scope.search();
+	          form[0].submit();
 	        }
 	      });
 	

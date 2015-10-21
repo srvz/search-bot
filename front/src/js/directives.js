@@ -23,12 +23,9 @@ class SearchBox {
 
     form.on('keyup', function(e) {
 
-      console.log(e);
-
       if (e && e.which === 13) {
 
-        const f = document.getElementsByTagName('form')[0];
-        f.submit();
+        form[0].submit();
       }
     });
 

@@ -35,7 +35,6 @@ class MainController {
   parseRouteParams() {
 
     const params = this.$routeParams;
-    console.log(params);
     const q = params.q;
 
     if (q) {
