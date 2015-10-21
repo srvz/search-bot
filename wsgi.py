@@ -19,7 +19,7 @@ except IOError:
     pass
 
 settings = {
-    'static_path': os.path.join(os.getcwd(), 'static'),
+    'static_path': os.path.join(os.path.dirname(__file__), 'static'),
     'name': 'bot',
 }
 
