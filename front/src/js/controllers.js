@@ -8,6 +8,7 @@ const tipsTypeMore = 'more';
 const tipsTypeProgress = 'progress';
 const tipsTypeMessage = 'message';
 
+
 class MainController {
   constructor($rootScope, $scope, $routeParams, services) {
 
@@ -172,6 +173,7 @@ class MainController {
   }
 }
 
+
 class HeaderController {
   constructor($rootScope, $scope, $routeParams) {
 
@@ -192,6 +194,7 @@ class HeaderController {
     this.$rootScope.$broadcast(eventSearchInput, this.data.input)
   }
 }
+
 
 class FooterController {
   constructor($scope, $mdDialog) {
@@ -236,6 +239,9 @@ class FooterController {
   }
 }
 
+MainController.$inject = ['$rootScope', '$scope', '$routeParams', 'services'];
+HeaderController.$inject = ['$rootScope', '$scope', '$routeParams'];
+FooterController.$inject = ['$scope', '$mdDialog'];
 
 angular.module('Bot')
   .controller('MainController', MainController)
