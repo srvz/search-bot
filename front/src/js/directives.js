@@ -19,15 +19,22 @@ class SearchBox {
 
     changePosition();
 
-    elem.on('focusin', function() {
-      scope.data.position = 'top';
-      changePosition();
+    elem.on('submit', function() {
+
+      if (scope.data.position !== 'keep' ) {
+
+        scope.data.position = 'top';
+        changePosition();
+      }
     });
 
     var deregister = scope.$watch('data.input', function(newCalue, oldValue) {
 
-      changePosition();
-      deregister();
+      if (scope.data.position === 'top' || scope.data.position === 'keep') {
+
+        changePosition();
+        deregister();
+      }
     });
 
     function changePosition() {

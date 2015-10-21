@@ -58549,7 +58549,7 @@
 	
 	    this.$rootScope = $rootScope;
 	    this.data = {
-	      placeholder: '输入关键字搜索或`!?`获取帮助'
+	      placeholder: '输入关键字搜索'
 	    };
 	
 	    var q = $routeParams.q;
@@ -58575,14 +58575,12 @@
 	    _classCallCheck(this, FooterController);
 	
 	    this.$mdDialog = $mdDialog;
-	    this.data = ['直接输入进行谷歌网页搜索，支持谷歌搜索规则', '`!?` `!help` 获取帮助', '`!img` `!image` `!images` 搜索谷歌图片。例：`!img google`', '`!video` 搜索谷歌视频。例：`!video google`', '`!news` 搜索谷歌新闻', '`!books` 搜索谷歌图书', '`!gh` `!github` 搜索 github.com', '`!so` `!sof` `!stackoverflow` 搜索 stackoverflow.com', '`!tw` `!twitter` 搜索 twitter.com', '`!wk` `!wiki` `!wikipedia` 搜索 wikipedia.com'];
+	    this.data = ['直接输入进行谷歌网页搜索，支持谷歌搜索规则，据谷歌API限制，最多返回64条结果', '`!img` `!image` `!images` 搜索谷歌图片。例：`!img google`', '`!video` 搜索谷歌视频。例：`!video google`', '`!news` 搜索谷歌新闻', '`!books` 搜索谷歌图书', '`!gh` `!github` 搜索 github.com', '`!so` `!sof` `!stackoverflow` 搜索 stackoverflow.com', '`!tw` `!twitter` 搜索 twitter.com', '`!wk` `!wiki` `!wikipedia` 搜索 wikipedia.com'];
 	  }
 	
 	  _createClass(FooterController, [{
 	    key: 'help',
 	    value: function help(event) {
-	
-	      console.log('help!!!help!!!help!!!');
 	
 	      var html = __webpack_require__(22)();
 	      var icon = __webpack_require__(25);
@@ -58602,10 +58600,7 @@
 	          icon: icon,
 	          data: this.data
 	        }
-	      }).then(function () {
-	
-	        console.log('close');
-	      });
+	      }).then(function () {});
 	    }
 	  }]);
 	
@@ -59107,9 +59102,13 @@
 	
 	      changePosition();
 	
-	      elem.on('focusin', function () {
-	        scope.data.position = 'top';
-	        changePosition();
+	      elem.on('submit', function () {
+	
+	        if (scope.data.position !== 'keep') {
+	
+	          scope.data.position = 'top';
+	          changePosition();
+	        }
 	      });
 	
 	      var deregister = scope.$watch('data.input', function (newCalue, oldValue) {
