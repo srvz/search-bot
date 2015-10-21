@@ -19,16 +19,16 @@ class SearchBox {
 
     changePosition();
 
-    elem.on('submit', function() {
+    const form = angular.element(elem.find('form')[0]);
 
-      if (!scope.data.input || scope.data.input.length === 0) {
+    form.on('keyup', function(e) {
 
-        return;
-      }
-      if (scope.data.position !== 'keep' ) {
+      console.log(e);
 
-        scope.data.position = 'top';
-        changePosition();
+      if (e && e.which === 13) {
+
+        const f = document.getElementsByTagName('form')[0];
+        f.submit();
       }
     });
 
@@ -43,7 +43,10 @@ class SearchBox {
 
     function changePosition() {
 
-      if (scope.data.position === 'keep') return;
+      if (scope.data.position === 'keep') {
+
+        return;
+      }
 
       const $document = DOCUMENT.get(SearchBox.instance);
       const height = ($document[0].body.clientHeight - 38) * 0.38;

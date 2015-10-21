@@ -18,13 +18,14 @@ body {
 }
 
 header {
-  padding-bottom: 60px;
+  min-height: 50px;
 }
 
 main {
 
   .background-color;
   padding-bottom: 50px;
+
   md-content {
 
     .background-color;
@@ -54,6 +55,7 @@ main {
         font-size: small;
         margin-top: 5px;
         margin-bottom: 5px;
+        word-wrap: break-word;
         a {
           text-decoration: none;
           font-style: normal;
@@ -102,6 +104,15 @@ footer {
     main {
       margin-left: 8px;
       margin-right: 8px;
+
+      md-content {
+
+        overflow: hidden;
+
+        h3 {
+          font-size: 16px;
+        }
+      }
     }
   }
 
