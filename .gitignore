@@ -148,3 +148,5 @@ front/bower_components/
 
 !static/js
 !static/dist
+
+bot/
