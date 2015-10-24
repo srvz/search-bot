@@ -4,7 +4,12 @@ from tornado.web import Application
 import os
 from handlers.index import MainHandler
 from handlers.search import SearchHandler
+import sys
 
+try:
+    port = int(sys.argv[-1])
+except Exception as e:
+    port = 5080
 
 settings = {
     'static_path': os.path.join(os.path.dirname(__file__), 'static'),
@@ -18,7 +23,7 @@ app = Application([
 
 def main():
     server = HTTPServer(app)
-    server.bind(os.environ.get('PORT', 5080))
+    server.bind(os.environ.get('PORT', port))
     server.start(0)
     IOLoop.current().start()
 
