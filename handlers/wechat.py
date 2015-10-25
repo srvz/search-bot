@@ -9,15 +9,15 @@ import schedule
 import time
 
 log = get_logger()
-access_token = ''
-def cron_job():
-    access_token = 'some token'
-    log.info('access_token %s', access_token)
-
-schedule.every(7000).seconds.do(cron_job)
-while 1:
-    schedule.run_pending()
-    time.sleep(500)
+# access_token = ''
+# def cron_job():
+#     access_token = 'some token'
+#     log.info('access_token %s', access_token)
+#
+# schedule.every(7000).seconds.do(cron_job)
+# while 1:
+#     schedule.run_pending()
+#     time.sleep(500)
 
 class WechatHandler(tornado.web.RequestHandler):
 
