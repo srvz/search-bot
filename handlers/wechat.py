@@ -15,7 +15,8 @@ class WechatHandler(tornado.web.RequestHandler):
         echoStr = self.get_query_argument('echostr', '')
         verified = self.verify_url()
         log.info('verified %s', verified)
-        log.ingo('request body %s', self.request.body)
+        log.info('query arguments %s', self.request.query_arguments)
+        log.info('body arguments %s', self.request.body_arguments)
         if verified:
             self.write(echoStr)
         else:
@@ -28,5 +29,5 @@ class WechatHandler(tornado.web.RequestHandler):
         return verify_wechat(signature, timestamp, nonce, wx_token)
 
     def post(self, *args, **kwargs):
-        log.info('request body %s', self.request.body)
+        log.info('request body %s', self.request.body_arguments)
         self.write('')
