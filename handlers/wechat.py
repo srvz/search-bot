@@ -28,5 +28,6 @@ class WechatHandler(tornado.web.RequestHandler):
         return verify_wechat(signature, timestamp, nonce)
 
     def post(self, *args, **kwargs):
+        log.info('request query %s', self.request.query_arguments)
         log.info('request body %s', self.request.body)
         self.write('')
