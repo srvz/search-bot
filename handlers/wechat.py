@@ -16,7 +16,6 @@ class WechatHandler(tornado.web.RequestHandler):
         verified = self.verify_url()
         log.info('verified %s', verified)
         log.info('query arguments %s', self.request.query_arguments)
-        log.info('body arguments %s', self.request.body_arguments)
         if verified:
             self.write(echoStr)
         else:
