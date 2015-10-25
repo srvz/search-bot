@@ -5,19 +5,8 @@ from .weapons import get_logger, verify_wechat
 from plugins.dispatcher import dispatch
 import json
 from .config import wx_token
-import schedule
-import time
 
 log = get_logger()
-# access_token = ''
-# def cron_job():
-#     access_token = 'some token'
-#     log.info('access_token %s', access_token)
-#
-# schedule.every(7000).seconds.do(cron_job)
-# while 1:
-#     schedule.run_pending()
-#     time.sleep(500)
 
 class WechatHandler(tornado.web.RequestHandler):
 
@@ -25,7 +14,8 @@ class WechatHandler(tornado.web.RequestHandler):
 
         echoStr = self.get_query_argument('echostr', '')
         verified = self.verify_url()
-        log.info('verifid %s', verified)
+        log.info('verified %s', verified)
+        log.ingo('request body %s', self.request.body)
         if verified:
             self.write(echoStr)
         else:
