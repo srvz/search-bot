@@ -1,6 +1,7 @@
 import logging
 import os
 import hashlib
+from plugins.weapons import get as GET
 
 def get_logger(name='handlers', level=logging.DEBUG):
     if os.environ.get('PRODUCTION'):
@@ -23,3 +24,14 @@ def verify_wechat(signature, timestamp, nonce, token):
     if hexed == signature:
         return True
     return False
+
+appid = 'wx03373c7dab1a0d4c'
+appsecret = '6d7d1481adb8d84be1c5e007f5c822f8'
+def get_access_token():
+    url = 'https://api.weixin.qq.com/cgi-bin/token'
+    params = {
+        'grant_type': 'client_credential',
+        'appid': appid,
+        'secret': appsecret
+    }
+    return GET(url, params)

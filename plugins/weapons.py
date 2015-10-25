@@ -19,7 +19,7 @@ def get_logger(name='plugins', level=logging.DEBUG):
 log = get_logger()
 
 
-def get(url, params):
+def get(url, params=None):
     try:
         req = requests.get(url, params=params, timeout=3)
         log.info('get url = %s', req.url)
