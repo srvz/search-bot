@@ -1,10 +1,10 @@
+import json
 import tornado.web
 from tornado import gen
 from tornado.gen import Future
-from .weapons import get_logger, verify_wechat
 from plugins.dispatcher import dispatch
-import json
-from .config import wx_token
+from weixin.weapons import verify_wechat
+from .weapons import get_logger
 
 log = get_logger()
 
@@ -25,7 +25,7 @@ class WechatHandler(tornado.web.RequestHandler):
         signature = self.get_query_argument('signature', '')
         timestamp = self.get_query_argument('timestamp', '')
         nonce = self.get_query_argument('nonce', '')
-        return verify_wechat(signature, timestamp, nonce, wx_token)
+        return verify_wechat(signature, timestamp, nonce)
 
     def post(self, *args, **kwargs):
         log.info('request body %s', self.request.body)

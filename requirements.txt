@@ -4,3 +4,5 @@ tornado==4.2.1
 jinja2==2.8
 pycrypto==2.6.1
 SQLAlchemy==1.0.9
+beautifulsoup4==4.4.1
+lxml==3.4.4

@@ -151,3 +151,4 @@ front/bower_components/
 
 bot/
 handlers/config.py
+weixin/config.py
