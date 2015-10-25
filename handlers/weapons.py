@@ -16,11 +16,10 @@ def get_logger(name='handlers', level=logging.DEBUG):
 
 
 def verify_wechat(signature, timestamp, nonce, token):
-    sorted_list = [timestamp, nonce, token].sort()
-    joined = ''.join(sorted_list)
+    tmp_list = [timestamp, nonce, token]
+    joined = ''.join(tmp_list.sort())
     byted = bytes(joined, encoding='utf8')
     hexed = hashlib.sha1(byted).hexdigest()
-
     if hexed == signature:
         return True
     return False
