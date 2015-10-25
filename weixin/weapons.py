@@ -4,6 +4,7 @@ import hashlib
 from .config import appid, appsecret, wx_token
 from plugins.weapons import get as GET
 
+
 def get_logger(name='handlers', level=logging.DEBUG):
     if os.environ.get('PRODUCTION'):
         level = logging.CRITICAL
@@ -15,6 +16,31 @@ def get_logger(name='handlers', level=logging.DEBUG):
     logger = logging.getLogger(name)
     logger.setLevel(level)
     return logger
+
+log = get_logger('weixin')
+
+
+def parse_query(query):
+    args = {
+        'target': 'google',
+        'start':  0,
+        'rsz':  8,
+        'type': 'web',
+        'q': query
+    }
+    query = query.strip()
+    if query.startswith('!'):
+        index = query.find(' ')
+        if index > -1:
+            keyword = query[1:index]
+            if keyword in ['?']:
+                args['target'] = keyword
+            else:
+                args['type'] = keyword
+            args['q'] = query[index + 1:]
+
+    log.info('parse args = %s', args)
+    return args
 
 
 def verify_wechat(signature, timestamp, nonce):

@@ -2,8 +2,9 @@ import json
 import tornado.web
 from tornado import gen
 from tornado.gen import Future
-from plugins.dispatcher import dispatch
-from weixin.weapons import verify_wechat
+from plugins.dispatcher import wx_dispatch
+from weixin.weapons import verify_wechat, parse_query
+from weixin.wxmessage import parse_message_body, text_message
 from .weapons import get_logger
 
 log = get_logger()
@@ -28,6 +29,32 @@ class WechatHandler(tornado.web.RequestHandler):
         return verify_wechat(signature, timestamp, nonce)
 
     def post(self, *args, **kwargs):
-        log.info('request query %s', self.request.query_arguments)
-        log.info('request body %s', self.request.body)
-        self.write('')
+        self.parse_post_args()
+
+    def parse_post_args(self):
+        if len(self.request.query_arguments):
+            msg_signature = self.get_query_argument('msg_signature', None)
+            signature = self.get_query_argument('signature', None)
+            timestamp = self.get_query_argument('timestamp', None)
+            nonce = self.get_query_argument('nonce', None)
+            encrypt_type = self.get_query_argument('encrypt_type', None)
+            if encrypt_type == 'aes':
+                pass
+            self.write('')
+        else:
+            params = parse_message_body(self.request.body)
+            if params['MsgType'] == 'text':
+                args = parse_query(params['Content'])
+                content = self.fetch(args)
+                response = text_message(params['FromUserName'], params['ToUserName'], content)
+                self.write(response)
+
+            else:
+                self.write('')
+
+    @staticmethod
+    def fetch(args):
+        future = Future()
+        future.set_result(wx_dispatch(args))
+        return future
+
