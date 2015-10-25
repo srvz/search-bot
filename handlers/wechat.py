@@ -6,6 +6,7 @@ from plugins.dispatcher import dispatch
 import json
 from .config import wx_token
 import schedule
+import time
 
 log = get_logger()
 access_token = ''
@@ -13,9 +14,10 @@ def cron_job():
     access_token = 'some token'
     log.info('access_token %s', access_token)
 
-schedule.every(5).seconds.do(cron_job)
+schedule.every(7000).seconds.do(cron_job)
 while 1:
-    schedule.run_continuously()
+    schedule.run_pending()
+    time.sleep(500)
 
 class WechatHandler(tornado.web.RequestHandler):
 
