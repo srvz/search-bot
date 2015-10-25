@@ -4,6 +4,7 @@ from tornado.web import Application
 import os
 from handlers.index import MainHandler
 from handlers.search import SearchHandler
+from handlers.wechat import WechatHandler
 import sys
 
 try:
@@ -17,7 +18,8 @@ settings = {
 }
 app = Application([
     (r'/', MainHandler),
-    (r'/api/search', SearchHandler)
+    (r'/api/search', SearchHandler),
+    (r'/wechat', WechatHandler)
 ], **settings)
 
 
