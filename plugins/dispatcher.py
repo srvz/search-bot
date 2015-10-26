@@ -31,9 +31,9 @@ def wx_dispatch(options):
                 for item in results:
                     counter += 1
                     rst += str(counter) + '. '
-                    rst += html.unescape(item['titleNoFormatting']) + '\n\n'
+                    rst += html.unescape(item['titleNoFormatting']) + ' \n\n'
                     # rst += item['content'] + '\n'
-                    rst += item['unescapedUrl'] + '\n\n'
+                    rst += item['unescapedUrl'] + ' \n\n'
                 return rst
             elif m_type == 'images':
                 pass
