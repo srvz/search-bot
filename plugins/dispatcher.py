@@ -31,7 +31,7 @@ def wx_dispatch(options):
                 for item in results:
                     counter += 1
                     rst += str(counter) + '. '
-                    rst += html.unescape(item['titleNoFormatting']) + '\n'
+                    rst += html.unescape(item['titleNoFormatting']) + '\n\n'
                     # rst += item['content'] + '\n'
                     rst += item['unescapedUrl'] + '\n\n'
                 return rst
@@ -39,4 +39,4 @@ def wx_dispatch(options):
                 pass
         return res.get('message', 'No results.')
     elif target in ['?', 'help']:
-        return '\n'.join(help_message.data)
+        return '\n\n'.join(help_message.data)

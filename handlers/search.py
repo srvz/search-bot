@@ -62,11 +62,15 @@ class SearchHandler(tornado.web.RequestHandler):
             index = query.find(' ')
             if index > -1:
                 keyword = query[1:index]
-                if keyword in ['?']:
+                if keyword in ['?', 'help']:
                     args['target'] = keyword
                 else:
                     args['type'] = keyword
                 args['q'] = query[index + 1:]
+            else:
+                keyword = query[1:]
+                if keyword in ['?', 'help']:
+                    args['target'] = keyword
 
         log.info('parse args = %s', args)
         return args
