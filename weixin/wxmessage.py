@@ -15,7 +15,7 @@ def parse_message_body(message_body=None):
             rst['URL'] = xml.URL.text
         if xml.ToUserName:
             rst['ToUserName'] = xml.ToUserName.text
-        if xml.FromuserName:
+        if xml.FromUserName:
             rst['FromUserName'] = xml.FromUserName.text
         if xml.CreateTime:
             rst['CreateTime'] = int(xml.CreateTime.text)
