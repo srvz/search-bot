@@ -48,9 +48,9 @@ class WechatHandler(tornado.web.RequestHandler):
             params = parse_message_body(self.request.body)
             if params['MsgType'] == 'text':
                 args = parse_query(params['Content'])
-                response = yield self.compose_message(params['FromUserName'], params['ToUserName'], args)
+                response = self.compose_message(params['FromUserName'], params['ToUserName'], args)
                 log.info('response type %s', type(response))
-                self.write(response)
+                self.write(response.result(timeout=3))
             else:
                 self.write('')
 
