@@ -32,7 +32,7 @@ def wx_dispatch(options):
                 for item in results:
                     counter += 1
                     rst += str(counter) + '. '
-                    rst += re.sub('<[^<]+?>', '', html.unescape(item['content'])) + ' \n\n'
+                    rst += html.unescape(item['titleNoFormatting']) + ' \n\n'
                     rst += item['unescapedUrl'] + ' \n\n'
                 return rst
             elif m_type == 'images':
@@ -40,7 +40,7 @@ def wx_dispatch(options):
                 counter = 0
                 for item in results:
                     counter += 1
-                    rst += str(counter) + '.'
+                    rst += str(counter) + '. '
                     rst += html.unescape(item['titleNoFormatting']) + ' \n\n'
                     rst += item['unescapedUrl'] + ' \n\n'
                 return rst
@@ -49,7 +49,7 @@ def wx_dispatch(options):
                 counter = 0
                 for item in results:
                     counter += 1
-                    rst += str(counter) + '.'
+                    rst += str(counter) + '. '
                     rst += html.unescape(item['content']) + ' \n\n'
                     rst += item['url'] + ' \n\n'
                 return rst
