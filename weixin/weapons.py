@@ -38,6 +38,10 @@ def parse_query(query):
             else:
                 args['type'] = keyword
             args['q'] = query[index + 1:]
+        else:
+            keyword = query[1:]
+            if keyword in ['?', 'help']:
+                args['target'] = keyword
 
     log.info('parse args = %s', args)
     return args
