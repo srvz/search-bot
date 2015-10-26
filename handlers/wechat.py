@@ -28,6 +28,7 @@ class WechatHandler(tornado.web.RequestHandler):
         nonce = self.get_query_argument('nonce', '')
         return verify_wechat(signature, timestamp, nonce)
 
+    @gen.coroutine
     def post(self, *args, **kwargs):
 
         log.info(self.request.body)
@@ -48,9 +49,9 @@ class WechatHandler(tornado.web.RequestHandler):
             params = parse_message_body(self.request.body)
             if params['MsgType'] == 'text':
                 args = parse_query(params['Content'])
-                response = self.compose_message(params['FromUserName'], params['ToUserName'], args)
+                response = yield self.compose_message(params['FromUserName'], params['ToUserName'], args)
                 log.info('response type %s', type(response))
-                self.write(response.result(timeout=3))
+                self.write(response)
             else:
                 self.write('')
 
