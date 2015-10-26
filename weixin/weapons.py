@@ -33,7 +33,7 @@ def parse_query(query):
         index = query.find(' ')
         if index > -1:
             keyword = query[1:index]
-            if keyword in ['?']:
+            if keyword in ['?', 'help']:
                 args['target'] = keyword
             else:
                 args['type'] = keyword

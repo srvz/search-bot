@@ -3,6 +3,7 @@ from .weapons import get_logger
 
 log = get_logger('weixin')
 
+
 def parse_message_body(message_body=None):
     if not message_body:
         return None
