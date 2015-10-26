@@ -35,6 +35,7 @@ class WechatHandler(tornado.web.RequestHandler):
         log.info(self.request.query_arguments)
         self.parse_post_args()
 
+    @gen.coroutine
     def parse_post_args(self):
         if len(self.request.query_arguments) and self.get_query_argument('encrypt_type', None):
             msg_signature = self.get_query_argument('msg_signature', None)
