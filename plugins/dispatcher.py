@@ -29,10 +29,10 @@ def wx_dispatch(options):
                 counter = 0
                 for item in results:
                     counter += 1
-                    rst += str(counter) + '.'
-                    rst += item['titleNoFormatting'] + '\n'
-                    rst += item['content'] + '\n'
-                    rst += item['unescapedUrl'] + '\n'
+                    rst += str(counter) + '. '
+                    rst += item['titleNoFormatting'] + '\n\n'
+                    # rst += item['content'] + '\n'
+                    rst += item['unescapedUrl'] + '\n\n'
                 return rst
             elif m_type == 'images':
                 pass
