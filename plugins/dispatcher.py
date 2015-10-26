@@ -23,7 +23,7 @@ def wx_dispatch(options):
         log.info('data %s', data)
         if data:
             results = data.get('results', None)
-            m_type = data.get('type', '')
+            m_type = res.get('type', '')
             if m_type == 'web':
                 rst = ''
                 counter = 0
