@@ -53,7 +53,7 @@ def parse_message_body(message_body=None):
     return rst
 
 
-def text_message(to_user, from_user, content, create_time):
+def text_message(to_user, from_user, create_time, content):
     msg = """
     <xml>
     <ToUserName><![CDATA[%s]]></ToUserName>
