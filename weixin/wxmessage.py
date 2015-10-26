@@ -63,5 +63,7 @@ def text_message(to_user, from_user, content):
     <Content><![CDATA[%s]]></Content>
     </xml>
     """ % (to_user, from_user, content)
+    log.info(msg)
+    log.info('msg type %s', type(msg))
     return msg
 
