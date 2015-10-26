@@ -32,11 +32,26 @@ def wx_dispatch(options):
                     counter += 1
                     rst += str(counter) + '. '
                     rst += html.unescape(item['titleNoFormatting']) + ' \n\n'
-                    # rst += item['content'] + '\n'
                     rst += item['unescapedUrl'] + ' \n\n'
                 return rst
             elif m_type == 'images':
-                pass
+                rst = ''
+                counter = 0
+                for item in results:
+                    counter += 1
+                    rst += str(counter) + '.'
+                    rst += html.unescape(item['titleNoFormatting']) + ' \n\n'
+                    rst += item['unescapedUrl'] + ' \n\n'
+                return rst
+            elif m_type == 'video':
+                rst = ''
+                counter = 0
+                for item in results:
+                    counter += 1
+                    rst += str(counter) + '.'
+                    rst += html.unescape(item['content']) + '\n\n'
+                    rst += item['url'] + '\n\n'
+                return rst
         return res.get('message', 'No results.')
     elif target in ['?', 'help']:
         return '\n\n'.join(help_message.data)

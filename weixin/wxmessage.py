@@ -48,6 +48,8 @@ def parse_message_body(message_body=None):
             rst['Description'] = xml.Description.text
         if xml.Url:
             rst['Url'] = xml.Url.text
+        if xml.Event:
+            rst['Event'] = xml.Event.text
     except Exception as e:
         log.error(e)
         return None

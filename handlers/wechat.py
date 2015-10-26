@@ -9,6 +9,7 @@ from .weapons import get_logger
 
 log = get_logger()
 
+
 class WechatHandler(tornado.web.RequestHandler):
 
     def get(self, *args, **kwargs):
@@ -48,7 +49,8 @@ class WechatHandler(tornado.web.RequestHandler):
             self.write('')
         else:
             params = parse_message_body(self.request.body)
-            if params['MsgType'] == 'text':
+            msg_type = params['MsgType']
+            if msg_type == 'text':
                 args = parse_query(params['Content'])
                 response = yield self.compose_message(params['FromUserName'],
                                                       params['ToUserName'],
@@ -56,6 +58,15 @@ class WechatHandler(tornado.web.RequestHandler):
                                                       args)
                 log.info('response type %s', type(response))
                 self.write(response)
+            elif msg_type == 'event':
+                if params['Event'] == 'subscribe':
+                    args = parse_query('!?')
+                    response = yield self.compose_message(params['FromUserName'],
+                                                          params['ToUserName'],
+                                                          params['CreateTime'],
+                                                          args)
+                    log.info('response type %s', type(response))
+                    self.write(response)
             else:
                 self.write('')
 

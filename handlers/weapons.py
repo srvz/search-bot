@@ -1,6 +1,7 @@
 import logging
 import os
 
+
 def get_logger(name='handlers', level=logging.DEBUG):
     if os.environ.get('PRODUCTION'):
         level = logging.CRITICAL
