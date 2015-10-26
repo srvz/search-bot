@@ -1,5 +1,8 @@
 from plugins import google
 from plugins import help as help_message
+from .weapons import get_logger
+
+log = get_logger()
 
 
 def dispatch(options):
@@ -17,10 +20,11 @@ def wx_dispatch(options):
     if target == 'google':
         res = google.fetch(options)
         data = res.get('data', None)
+        log.info('data %s', data)
         if data:
             results = data.get('results', None)
-            type = data.get('type', '')
-            if type == 'web':
+            m_type = data.get('type', '')
+            if m_type == 'web':
                 rst = ''
                 counter = 0
                 for item in results:
@@ -30,7 +34,7 @@ def wx_dispatch(options):
                     rst += item['content'] + '\n'
                     rst += item['unescapedUrl'] + '\n'
                 return rst
-            elif type == 'images':
+            elif m_type == 'images':
                 pass
         return res.get('message', 'No results.')
     elif target == 'help':
