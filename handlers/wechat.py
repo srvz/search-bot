@@ -50,15 +50,18 @@ class WechatHandler(tornado.web.RequestHandler):
             params = parse_message_body(self.request.body)
             if params['MsgType'] == 'text':
                 args = parse_query(params['Content'])
-                response = yield self.compose_message(params['FromUserName'], params['ToUserName'], args)
+                response = yield self.compose_message(params['FromUserName'],
+                                                      params['ToUserName'],
+                                                      params['CreateTime'],
+                                                      args)
                 log.info('response type %s', type(response))
                 self.write(response)
             else:
                 self.write('')
 
     @staticmethod
-    def compose_message(to_user, from_user, args):
+    def compose_message(to_user, from_user, create_time, args):
         future = Future()
-        future.set_result(text_message(to_user, from_user, wx_dispatch(args)))
+        future.set_result(text_message(to_user, from_user, create_time, wx_dispatch(args)))
         return future
 

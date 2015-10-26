@@ -53,16 +53,16 @@ def parse_message_body(message_body=None):
     return rst
 
 
-def text_message(to_user, from_user, content):
+def text_message(to_user, from_user, content, create_time):
     msg = """
     <xml>
     <ToUserName><![CDATA[%s]]></ToUserName>
     <FromUserName><![CDATA[%s]]></FromUserName>
-    <CreateTime>12345678</CreateTime>
+    <CreateTime>%s</CreateTime>
     <MsgType><![CDATA[text]]></MsgType>
     <Content><![CDATA[%s]]></Content>
     </xml>
-    """ % (to_user, from_user, content)
+    """ % (to_user, from_user, create_time, content)
     log.info(msg)
     log.info('msg type %s', type(msg))
     return msg
