@@ -29,7 +29,7 @@ def wx_dispatch(options):
                 counter = 0
                 for item in results:
                     counter += 1
-                    rst += counter + '.'
+                    rst += str(counter) + '.'
                     rst += item['titleNoFormatting'] + '\n'
                     rst += item['content'] + '\n'
                     rst += item['unescapedUrl'] + '\n'
