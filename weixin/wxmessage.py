@@ -1,5 +1,8 @@
 from bs4 import BeautifulSoup as BS
+from .config import wx_token, wx_aeskey, appid
 from .weapons import get_logger
+from .wxcrypt import WXBizMsgCrypt
+from weixin import ierror
 
 log = get_logger('weixin')
 
@@ -70,3 +73,26 @@ def text_message(to_user, from_user, create_time, content):
     log.info('msg type %s', type(msg))
     return msg
 
+
+def decrypted_message_body(sPostData, sMsgSignature, sTimeStamp, sNonce):
+    """
+    :param sPostData:
+    :param sMsgSignature:
+    :param sTimeStamp:
+    :param sNonce:
+    :return: parse_message_body parsed args
+    """
+    msg_crypt = WXBizMsgCrypt(wx_token, wx_aeskey, appid)
+    ret, xml_body = msg_crypt.DecryptMsg(sPostData, sMsgSignature, sTimeStamp, sNonce)
+    if ret == ierror.WXBizMsgCrypt_OK:
+        return parse_message_body(xml_body)
+    return None
+
+
+def encrypted_message_body(sReplyMsg, sNonce, timestamp=None):
+
+    msg_crypt = WXBizMsgCrypt(wx_token, wx_aeskey, appid)
+    ret, xml_body = msg_crypt.EncryptMsg(sReplyMsg, sNonce, timestamp)
+    if ret == ierror.WXBizMsgCrypt_OK:
+        return xml_body
+    return ''

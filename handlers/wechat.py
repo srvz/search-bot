@@ -4,7 +4,7 @@ from tornado import gen
 from tornado.gen import Future
 from plugins.dispatcher import wx_dispatch
 from weixin.weapons import verify_wechat, parse_query
-from weixin.wxmessage import parse_message_body, text_message
+from weixin.wxmessage import parse_message_body, text_message, decrypted_message_body, encrypted_message_body
 from .weapons import get_logger
 
 log = get_logger()
@@ -45,11 +45,16 @@ class WechatHandler(tornado.web.RequestHandler):
             nonce = self.get_query_argument('nonce', None)
             encrypt_type = self.get_query_argument('encrypt_type', None)
             if encrypt_type == 'aes':
-                pass
+                params = decrypted_message_body(self.request.body, msg_signature, timestamp, nonce)
+                msg_type = params.get('MsgType', None)
+                if msg_type == 'text':
+                    pass
+                elif msg_type == 'event':
+                    pass
             self.write('')
         else:
             params = parse_message_body(self.request.body)
-            msg_type = params['MsgType']
+            msg_type = params.get('MsgType', None)
             if msg_type == 'text':
                 args = parse_query(params['Content'])
                 response = yield self.compose_message(params['FromUserName'],
@@ -76,3 +81,8 @@ class WechatHandler(tornado.web.RequestHandler):
         future.set_result(text_message(to_user, from_user, create_time, wx_dispatch(args)))
         return future
 
+    @staticmethod
+    def compose_encrypted_message(to_user, from_user, create_time, args):
+        future = Future()
+        future.set_result(text_message(to_user, from_user, create_time, wx_dispatch(args)))
+        return future

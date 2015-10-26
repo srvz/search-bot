@@ -2,6 +2,7 @@ from plugins import google
 from plugins import help as help_message
 from .weapons import get_logger
 import html
+import re
 
 log = get_logger()
 
@@ -31,7 +32,7 @@ def wx_dispatch(options):
                 for item in results:
                     counter += 1
                     rst += str(counter) + '. '
-                    rst += html.unescape(item['titleNoFormatting']) + ' \n\n'
+                    rst += re.sub('<[^<]+?>', '', html.unescape(item['content'])) + ' \n\n'
                     rst += item['unescapedUrl'] + ' \n\n'
                 return rst
             elif m_type == 'images':
@@ -49,8 +50,8 @@ def wx_dispatch(options):
                 for item in results:
                     counter += 1
                     rst += str(counter) + '.'
-                    rst += html.unescape(item['content']) + '\n\n'
-                    rst += item['url'] + '\n\n'
+                    rst += html.unescape(item['content']) + ' \n\n'
+                    rst += item['url'] + ' \n\n'
                 return rst
         return res.get('message', 'No results.')
     elif target in ['?', 'help']:
