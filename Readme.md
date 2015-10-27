@@ -9,12 +9,13 @@ Only tested on Python3.5
 
 ## how to
 
+If you are familiar with frontend development, just checkout the `front` directory.
+
 ### create `weixin/config.py` (required)
 
-Note, wechat encrypted message not implemented.
+Note, wechat encrypt mode not implemented.
 
 ```
-
 appid = ''
 
 appsecret = ''
@@ -22,13 +23,11 @@ appsecret = ''
 wx_token = ''
 
 wx_aeskey = ''
-
 ```
 
 ### On your own server
 
 ```
-
 virtualenv -p `which python3.5` py3.5
 
 source py3.5/bin/activate
@@ -38,7 +37,6 @@ pip install -r requirements.txt
 export PRODUCTION=1 //turn off log
 
 nohup python3.5 tornado_app 5678 &// default port 5080
-
 
 ```
 
@@ -50,19 +48,15 @@ Also if you'd like to use `supervisord` and `nginx`, you can reference to `super
 Note, one free heroku account only support one worker.
 
 ```
-
 heroku create 
 
 git push heroku master
-
 ```
 
 ### On openshift
 
 ```
-
 *.rhcloud.com has already been fucked by GFW.
-
 ```
 
 ## LICENCE
