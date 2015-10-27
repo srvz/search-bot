@@ -35,18 +35,24 @@ class MainController {
   parseRouteParams() {
 
     const params = this.$routeParams;
-    const q = params.q;
+    const query = params.q;
 
-    if (q) {
+    if (query) {
 
+      let q = query.trim();
       this.params.set('q', q);
       this.params.set('target', params.target || 'google');
       this.params.set('start', params.start || 0);
       this.params.set('type', params.type || 'web');
       this.params.set('rsz', params.rsz || 8);
 
+      this.services.changeTitle(q + ' | Search Bot');
+
       this.showTips(tipsTypeProgress);
       this.search();
+    } else {
+
+      this.services.changeTitle('Search Bot');
     }
   }
 

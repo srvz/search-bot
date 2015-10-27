@@ -12,15 +12,24 @@ function Request($resource, host) {
   });
 }
 
-servicesConfigure.$inject = ['services', 'Request'];
-function servicesConfigure(services, Request) {
+changeTitle.$inject = ['$rootScope'];
+function changeTitle($rootScope) {
+  return (title) => {
+    $rootScope.title = title
+  }
+}
+
+servicesConfigure.$inject = ['services', 'Request', 'changeTitle'];
+function servicesConfigure(services, Request, changeTitle) {
 
   return () => {
     services.Request = Request;
+    services.changeTitle = changeTitle;
   }
 }
 
 angular.module('Bot')
   .constant('services', {})
   .factory('Request', Request)
+  .factory('changeTitle', changeTitle)
   .factory('servicesConfigure', servicesConfigure);
