@@ -25,6 +25,8 @@ def wx_dispatch(options):
         log.info('data %s', data)
         if data:
             results = data.get('results', None)
+            if not results or len(results) == 0:
+                return 'No results.'
             m_type = res.get('type', '')
             if m_type in ['web', 'github', 'stackoverflow', 'twitter', 'wikipedia', 'zhihu', 'v2ex']:
                 rst = ''
