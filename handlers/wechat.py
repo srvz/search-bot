@@ -1,4 +1,3 @@
-import json
 import tornado.web
 from tornado import gen
 from tornado.gen import Future
@@ -81,8 +80,3 @@ class WechatHandler(tornado.web.RequestHandler):
         future.set_result(text_message(to_user, from_user, create_time, wx_dispatch(args)))
         return future
 
-    @staticmethod
-    def compose_encrypted_message(to_user, from_user, create_time, args):
-        future = Future()
-        future.set_result(text_message(to_user, from_user, create_time, wx_dispatch(args)))
-        return future

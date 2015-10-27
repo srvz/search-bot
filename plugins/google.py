@@ -3,6 +3,7 @@ import json
 
 log = get_logger()
 
+
 def fetch(args):
 
     log.info('fetch args %s', args)
@@ -54,9 +55,11 @@ def fetch(args):
             return {'data': json_rst.get('responseData', {}), 'type': search_type}
     return {'message': 'No result.'}
 
+
 def compose_url(serach_scope):
     base_url = 'https://ajax.googleapis.com/ajax/services/search/'
     return base_url + serach_scope
+
 
 def compose_params(args):
     params = {

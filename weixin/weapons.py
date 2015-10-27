@@ -5,7 +5,7 @@ from .config import appid, appsecret, wx_token
 from plugins.weapons import get as GET
 
 
-def get_logger(name='handlers', level=logging.DEBUG):
+def get_logger(name='weixin', level=logging.DEBUG):
     if os.environ.get('PRODUCTION'):
         level = logging.CRITICAL
     format_tpl = (
@@ -17,7 +17,7 @@ def get_logger(name='handlers', level=logging.DEBUG):
     logger.setLevel(level)
     return logger
 
-log = get_logger('weixin')
+log = get_logger()
 
 
 def parse_query(query):

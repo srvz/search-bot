@@ -4,12 +4,12 @@ from .weapons import get_logger
 from .wxcrypt import WXBizMsgCrypt
 from weixin import ierror
 
-log = get_logger('weixin')
+log = get_logger()
 
 
 def parse_message_body(message_body=None):
     if not message_body:
-        return None
+        return {}
     rst = {}
     try:
         xml = BS(message_body, 'xml')
@@ -55,7 +55,7 @@ def parse_message_body(message_body=None):
             rst['Event'] = xml.Event.text
     except Exception as e:
         log.error(e)
-        return None
+        return {}
     return rst
 
 
